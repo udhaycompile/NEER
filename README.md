@@ -120,6 +120,4 @@ dataset/           demo dataset (CSV): network, 37-day live city, 16 scenarios -
 
 ## Author
 
-Built by **Akarsh N** (Team Vector Zero), B.E. Computer Science and Engineering at PSNA College of Engineering and Technology, using AI-assisted development (Claude Code).
-
-[Case study](https://akarshncodes.github.io/neer/) · [Portfolio](https://akarshncodes.github.io) · [LinkedIn](https://www.linkedin.com/in/akarshncodes/) · akarshn.codes@gmail.com
+Built by **Akarsh N,Udhayabala C K** (Team Vector Zero), B.E. Computer Science and Engineering at PSNA College of Engineering and Technology, using AI-assisted development (Claude Code).
