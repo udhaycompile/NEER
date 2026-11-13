@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Udhay's Learning | Cloud & AI Data Engineering LMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+    .coursera-blue { background-color: #0056d2; }
+    .coursera-blue-text { color: #0056d2; }
+    .card-shadow {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+      transition: all 0.2s ease;
+    }
+    .card-shadow:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.07);
+    }
+    .nav-item.active {
+      background-color: #eff6ff;
+      color: #0056d2;
+      font-weight: 600;
+      border-right: 3px solid #0056d2;
+    }
+    input[type="checkbox"] { accent-color: #0056d2; }
+
+    /* Print Styles Specifically for Clean 1-Page ATS Resume Export */
+    @media print {
+      body { background: #ffffff !important; color: #000000 !important; }
+      #login-screen, #sidebar, .no-print { display: none !important; }
+      #main-content { margin-left: 0 !important; padding: 0 !important; max-width: 100% !important; }
+      #view-dashboard, #view-catalog, #view-classroom, #view-certs, #view-radar, #view-aitutor, #view-tracker { display: none !important; }
+      #view-resume { display: block !important; }
+      #resume-paper {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ==================== 1. CLEAN COURSERA-STYLE LOGIN SCREEN ==================== -->
+  <div id="login-screen" class="fixed inset-0 z-50 bg-slate-50 flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-xl p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="h-11 w-11 rounded-xl coursera-blue flex items-center justify-center text-white font-extrabold text-xl shadow-sm">
+          UL
+        </div>
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-blue-700 block">Personal Learning Portal</span>
+          <h1 class="text-xl font-extrabold text-slate-900">Udhay's Learning</h1>
+        </div>
+      </div>
+
+      <div class="bg-blue-50/80 border border-blue-100 rounded-xl p-4 mb-6">
+        <p class="text-xs text-slate-700 italic leading-relaxed">
+          "Core skills get you the interview. Side-skills and official AWS, Google & Databricks badges get you the ₹15+ LPA offer."
+        </p>
+        <span class="text-[11px] font-semibold text-blue-700 mt-1.5 block">— Welcome back, Machaan Udhay (UB)</span>
+      </div>
+
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Learner Username</label>
+          <input id="login-user" type="text" value="Udhay" required
+            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+          <input id="login-pass" type="password" placeholder="Enter your password" required
+            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" />
+        </div>
+
+        <div id="login-error" class="hidden text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg p-2.5">
+          Incorrect username or password. Please try again.
+        </div>
+
+        <button type="submit"
+          class="w-full py-3 rounded-lg coursera-blue hover:bg-blue-700 text-white font-semibold text-sm transition shadow-sm">
+          Sign In to Udhay's Learning →
+        </button>
+      </form>
+
+      <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+        <span>💻 MacBook Air M5 (16GB/512GB)</span>
+        <span>🇮🇳 Tamil + 🌐 Eng + Auto-CV</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. MAIN COURSERA-STYLE WORKSPACE ==================== -->
+  <div id="app-shell" class="hidden min-h-screen flex">
+
+    <!-- Left Navigation Sidebar (Coursera / Udemy Light UI) -->
+    <aside id="sidebar" class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between fixed inset-y-0 left-0 z-30">
+      <div>
+        <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl coursera-blue flex items-center justify-center text-white font-extrabold text-base">
+            UL
+          </div>
+          <div>
+            <h2 class="font-bold text-slate-900 text-base leading-tight">Udhay's Learning</h2>
+            <span class="text-[11px] text-slate-500 font-medium">Cloud & AI Data LMS</span>
+          </div>
+        </div>
+
+        <!-- Learner Quick Summary -->
+        <div class="p-4 mx-3 my-3 bg-slate-50 rounded-xl border border-slate-200/80">
+          <div class="flex justify-between items-center text-xs font-semibold text-slate-700 mb-1">
+            <span>Overall Mastery</span>
+            <span id="sidebar-pct" class="text-blue-700">0%</span>
+          </div>
+          <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+            <div id="sidebar-bar" class="h-full coursera-blue transition-all duration-300" style="width:0%"></div>
+          </div>
+          <div class="mt-2 flex items-center justify-between text-[11px] text-slate-500">
+            <span id="sidebar-tasks">0/72 Lessons</span>
+            <span id="sidebar-certs-stat" class="text-amber-600 font-semibold">🏆 0/18 Certs</span>
+          </div>
+        </div>
+
+        <!-- Clean Separate Sidebar Tabs -->
+        <nav class="px-2 space-y-1 mt-1">
+          <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item active w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">
+            <span>🏠</span> <span>Home Dashboard</span>
+          </button>
+          <button onclick="switchTab('catalog')" id="nav-catalog" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">
+            <span>📚</span> <span>18-Month Curriculum</span>
+          </button>
+          <button onclick="switchTab('classroom')" id="nav-classroom" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">
+            <span>🎓</span> <span>Study Classroom</span>
+          </button>
+          <button onclick="switchTab('certs')" id="nav-certs" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">
+            <span>🏆</span> <span>Certs & Side-Skills</span>
+            <span class="ml-auto text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">18</span>
+          </button>
+          <button onclick="switchTab('resume')" id="nav-resume" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">
+            <span>📄</span> <span>Auto-Resume Builder</span>
+            <span class="ml-auto text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">CV</span>
+          </button>
+          <button onclick="switchTab('radar')" id="nav-radar" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">
+            <span>📡</span> <span>Tech Radar & Buzz</span>
+            <span class="ml-auto text-[10px] font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">LIVE</span>
+          </button>
+          <button onclick="switchTab('aitutor')" id="nav-aitutor" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">
+            <span>✨</span> <span>AI Doubt Solver</span>
+          </button>
+          <button onclick="switchTab('tracker')" id="nav-tracker" class="nav-item w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition">
+            <span>⏱</span> <span>Study Log & M5 Setup</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Bottom User Profile & Sign Out -->
+      <div class="p-4 border-t border-slate-200 bg-slate-50/50">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-900">Udhay ("UB")</p>
+            <p class="text-[11px] text-slate-500">CSE '28 • MacBook Air M5</p>
+          </div>
+          <button onclick="lockApp()" class="text-xs font-semibold text-red-600 hover:text-red-700 px-2.5 py-1 rounded border border-red-200 bg-white">
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Right Content Area -->
+    <main id="main-content" class="flex-1 ml-64 p-6 sm:p-8 max-w-6xl">
+
+      <!-- ==================== VIEW 1: HOME DASHBOARD ==================== -->
+      <section id="view-dashboard" class="space-y-6">
+        
+        <!-- Coursera Blue Motivational Quote Welcome Block -->
+        <div class="bg-gradient-to-r from-[#0056d2] to-[#1e40af] rounded-2xl p-6 sm:p-8 text-white shadow-md">
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider bg-white/15 px-3 py-1 rounded-full">
+              👋 Welcome back to Udhay's Learning, Machaan!
+            </span>
+            <button onclick="nextQuote()" class="text-xs bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-lg font-medium transition">
+              ↻ New Daily Quote
+            </button>
+          </div>
+          <blockquote id="hero-quote" class="text-lg sm:text-xl font-bold leading-snug max-w-3xl mb-2">
+            "Core skills get you the interview. Side-skills and official AWS, Google & Databricks badges get you the ₹15+ LPA offer."
+          </blockquote>
+          <p id="hero-quote-author" class="text-xs text-blue-100 font-medium">— Udhay's 2027–2030 Master Plan</p>
+        </div>
+
+        <!-- 4 Clean White Metric Cards -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="card-shadow rounded-xl p-5">
+            <span class="text-xs font-semibold text-slate-500 uppercase">Current Active Module</span>
+            <h3 id="dash-current-code" class="text-xl font-extrabold text-slate-900 mt-1">M01 (Jan 2027)</h3>
+            <p id="dash-current-title" class="text-xs text-blue-700 font-medium mt-0.5 truncate">SQL Core & Native Postgres</p>
+          </div>
+          <div class="card-shadow rounded-xl p-5">
+            <span class="text-xs font-semibold text-slate-500 uppercase">This Week's Study Goal</span>
+            <h3 id="dash-week-hrs" class="text-xl font-extrabold text-slate-900 mt-1">0 / 7.0 hrs</h3>
+            <p class="text-xs text-emerald-600 font-medium mt-0.5">Target: 6–8 hrs / week</p>
+          </div>
+          <div class="card-shadow rounded-xl p-5 cursor-pointer hover:border-amber-400" onclick="switchTab('certs')">
+            <span class="text-xs font-semibold text-amber-700 uppercase">Official Badges Earned ↗</span>
+            <h3 id="dash-certs-count" class="text-xl font-extrabold text-slate-900 mt-1">0 / 18 Certs</h3>
+            <p class="text-xs text-slate-500 mt-0.5">AWS • Google • Snowflake</p>
+          </div>
+          <div class="card-shadow rounded-xl p-5 cursor-pointer hover:border-blue-500" onclick="switchTab('resume')">
+            <span class="text-xs font-semibold text-blue-700 uppercase">Auto-Resume Status ↗</span>
+            <h3 id="dash-resume-skills" class="text-xl font-extrabold text-slate-900 mt-1">2 Skills Ready</h3>
+            <p class="text-xs text-emerald-600 font-medium mt-0.5">Click to view & print CV</p>
+          </div>
+        </div>
+
+        <!-- Two-Column Block: Resume Course + Top Official Portals -->
+        <div class="grid lg:grid-cols-3 gap-6">
+          
+          <!-- Continue Course Card (Coursera Style) -->
+          <div class="lg:col-span-2 card-shadow rounded-2xl p-6 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-3 py-1 rounded-md">
+                  Continue Learning
+                </span>
+                <span id="resume-date" class="text-xs font-semibold text-slate-500">Jan 2027</span>
+              </div>
+              <h3 id="resume-title" class="text-xl font-bold text-slate-900 mb-2">M01: SQL Core & M5 ARM64 PostgreSQL</h3>
+              <p id="resume-desc" class="text-sm text-slate-600 mb-4 leading-relaxed"></p>
+
+              <!-- Side-Skill & Official Certificate Preview Boxes -->
+              <div class="grid sm:grid-cols-2 gap-3 mb-4">
+                <div class="p-3 rounded-xl bg-purple-50/70 border border-purple-200 text-xs">
+                  <span class="font-bold text-[10px] text-purple-700 uppercase block mb-0.5">⚡ Side-Skill This Month:</span>
+                  <span id="dash-side-skill" class="text-slate-800 font-semibold">Regex & Dirty Text Cleaning</span>
+                </div>
+                <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs">
+                  <span class="font-bold text-[10px] text-amber-800 uppercase block mb-0.5">🏆 Official Certificate:</span>
+                  <span id="dash-cert-target" class="text-slate-800 font-semibold">HackerRank SQL Verified</span>
+                </div>
+              </div>
+
+              <div id="resume-quick-links" class="flex flex-wrap gap-2 mb-4"></div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+              <div class="flex-1 min-w-[180px]">
+                <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
+                  <span>Module Progress</span>
+                  <span id="resume-pct">0%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                  <div id="resume-bar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                </div>
+              </div>
+              <button onclick="openModuleInClassroom(currentActiveMonthId)" class="px-5 py-2.5 rounded-lg coursera-blue hover:bg-blue-700 text-white font-semibold text-xs transition">
+                Go to Study Classroom →
+              </button>
+            </div>
+          </div>
+
+          <!-- Official Cloud & YouTube Shortcuts -->
+          <div class="card-shadow rounded-2xl p-6">
+            <h4 class="font-bold text-slate-900 text-sm mb-1">🚀 Quick Study & Cloud Links</h4>
+            <p class="text-xs text-slate-500 mb-3">1-click access to your top platforms:</p>
+            <div class="space-y-2 text-xs">
+              <a href="https://www.youtube.com/@dataengineeringvideos" target="_blank" class="flex items-center justify-between p-2.5 rounded-lg bg-red-50 hover:bg-red-100 border border-red-200 text-red-800 font-semibold transition">
+                <span>🇮🇳 Gowtham SB (Tamil DE)</span> <span>↗</span>
+              </a>
+              <a href="https://colab.research.google.com/" target="_blank" class="flex items-center justify-between p-2.5 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 font-semibold transition">
+                <span>🐍 Google Colab Cloud Notebooks</span> <span>↗</span>
+              </a>
+              <a href="https://www.cloudskillsboost.google/" target="_blank" class="flex items-center justify-between p-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 font-semibold transition">
+                <span>☁️ Google Cloud Skills Boost</span> <span>↗</span>
+              </a>
+              <a href="https://explore.skillbuilder.aws/" target="_blank" class="flex items-center justify-between p-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 font-semibold transition">
+                <span>🟧 AWS Skill Builder & Quest</span> <span>↗</span>
+              </a>
+              <a href="https://learn.snowflake.com/" target="_blank" class="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-semibold transition">
+                <span>❄️ Snowflake Free Badges</span> <span>↗</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 2: 18-MONTH COURSE CATALOG ==================== -->
+      <section id="view-catalog" class="hidden space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900">18-Month Specialization Curriculum</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Every card includes Core Topic + Side-Skill + Official Certificate + Tamil/English Videos.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="filterCatalog('all', this)" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold coursera-blue text-white">All (18)</button>
+            <button onclick="filterCatalog('Phase 1', this)" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">Phase 1: Core</button>
+            <button onclick="filterCatalog('Phase 2', this)" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">Phase 2: Cloud</button>
+            <button onclick="filterCatalog('Phase 3', this)" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">Phase 3: Spark/Lakehouse</button>
+            <button onclick="filterCatalog('Phase 4', this)" class="cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">Phase 4: AI RAG & Jobs</button>
+          </div>
+        </div>
+
+        <div id="catalog-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      </section>
+
+      <!-- ==================== VIEW 3: STUDY CLASSROOM ==================== -->
+      <section id="view-classroom" class="hidden space-y-6">
+        <div class="card-shadow rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold uppercase text-slate-400">Select Month:</span>
+            <select id="classroom-select" onchange="openModuleInClassroom(parseInt(this.value))"
+              class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm font-semibold text-slate-900 focus:outline-none focus:border-blue-600">
+            </select>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="prevModule()" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50">← Prev Month</button>
+            <button onclick="nextModule()" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50">Next Month →</button>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-6">
+          
+          <!-- Left 2 Columns: Weekly Syllabus Checklist + Side Skill + Cert + Notes -->
+          <div class="lg:col-span-2 space-y-6">
+            <div class="card-shadow rounded-2xl p-6">
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span id="class-badge" class="text-xs font-bold uppercase px-2.5 py-1 rounded bg-blue-50 text-blue-700">M01 • Jan 2027</span>
+                <span id="class-split" class="text-xs font-semibold text-emerald-700">⏱ 4h Weekdays + 3h Sunday</span>
+              </div>
+              <h2 id="class-title" class="text-2xl font-extrabold text-slate-900 mb-2">Module Title</h2>
+              <p id="class-impact" class="text-xs text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-200 mb-4"></p>
+
+              <!-- Side-Skill & Official Certificate Highlight Cards -->
+              <div class="grid sm:grid-cols-2 gap-3 mb-6">
+                <div class="p-3.5 rounded-xl bg-purple-50/70 border border-purple-200">
+                  <span class="text-[10px] uppercase text-purple-700 font-bold block mb-1">⚡ EXTRA SIDE-SKILL TO LEARN:</span>
+                  <p id="class-side-skill" class="text-xs text-slate-900 font-bold mb-1"></p>
+                  <p id="class-side-why" class="text-[11px] text-slate-600"></p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 flex flex-col justify-between">
+                  <div>
+                    <span class="text-[10px] uppercase text-amber-800 font-bold block mb-1">🏆 OFFICIAL CERTIFICATE / BADGE:</span>
+                    <p id="class-cert-name" class="text-xs text-slate-900 font-bold mb-2"></p>
+                  </div>
+                  <div class="flex items-center justify-between gap-2 pt-2 border-t border-amber-200/80">
+                    <a id="class-cert-link" href="#" target="_blank" class="text-[11px] font-bold text-blue-700 hover:underline">Open Official Portal ↗</a>
+                    <label class="flex items-center gap-1.5 text-xs font-bold text-emerald-700 cursor-pointer">
+                      <input type="checkbox" id="class-cert-check" onchange="toggleCertEarned(currentActiveMonthId)" class="h-4 w-4 rounded" />
+                      <span>Earned!</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-3">✅ Weekly Syllabus & Tasks (Checking these updates your Resume!)</h3>
+              <div id="class-tasks" class="space-y-2.5"></div>
+            </div>
+
+            <!-- Personal Study Notes Block -->
+            <div class="card-shadow rounded-2xl p-6">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-bold text-slate-900">📝 Udhay's Personal Notes & GitHub Repo Link</h3>
+                <span class="text-[11px] text-emerald-600 font-medium">Auto-saved</span>
+              </div>
+              <textarea id="class-notes" rows="3" onchange="saveClassroomNote()"
+                placeholder="Write key SQL queries, formulas, or paste your GitHub repository link for this month..."
+                class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 focus:outline-none focus:bg-white focus:border-blue-600"></textarea>
+            </div>
+          </div>
+
+          <!-- Right Column: Tamil Videos, English Videos, Practice Docs & M5 Setup -->
+          <div class="space-y-5">
+            <div class="card-shadow rounded-2xl p-5">
+              <h3 class="text-sm font-bold text-slate-900 mb-1">🎬 Direct Video & Study Links</h3>
+              <p class="text-xs text-slate-500 mb-3">🇮🇳 Tamil, 🌐 English & 🏆 Certificate links:</p>
+              <div id="class-resources" class="space-y-2"></div>
+            </div>
+
+            <div class="card-shadow rounded-2xl p-5 bg-slate-900 text-white border-none">
+              <div class="flex items-center gap-2 text-xs font-bold text-sky-400 uppercase mb-1.5">
+                <span>🍎 MacBook Air M5 Setup</span>
+              </div>
+              <p id="class-m5-tip" class="text-xs text-slate-200 leading-relaxed mb-3"></p>
+              <div id="class-m5-cmd" class="font-mono-code text-[11px] bg-slate-950 text-emerald-400 p-2.5 rounded-lg border border-slate-800 overflow-x-auto"></div>
+            </div>
+
+            <div class="card-shadow rounded-2xl p-5 bg-blue-50/60 border-blue-200">
+              <h4 class="text-sm font-bold text-slate-900 mb-1">Have a doubt while watching?</h4>
+              <p class="text-xs text-slate-600 mb-3">Ask your built-in AI Tutor to explain any concept in simple terms.</p>
+              <button onclick="askAIAboutCurrentModule()" class="w-full py-2.5 rounded-lg coursera-blue text-white font-semibold text-xs hover:bg-blue-700 transition">
+                ✨ Ask AI Tutor About This Module
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 4: CERTS & SIDE-SKILLS VAULT ==================== -->
+      <section id="view-certs" class="hidden space-y-6">
+        <div class="card-shadow rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase text-amber-700 bg-amber-50 px-2.5 py-1 rounded">🏆 Resume Multiplier Vault</span>
+            <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Official Cloud Certificates & Essential Side-Skills</h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Tick "Mark Badge Earned" as you finish each free AWS, Google Cloud, Colab, Snowflake, Databricks, or HackerRank credential—it automatically adds to your Resume!
+            </p>
+          </div>
+          <div class="bg-amber-50 border border-amber-200 px-4 py-2.5 rounded-xl text-right">
+            <span class="text-[10px] font-bold text-amber-800 uppercase block">Verified Credentials</span>
+            <span id="vault-cert-counter" class="text-lg font-extrabold text-amber-900">0 / 18 Earned</span>
+          </div>
+        </div>
+
+        <div id="certs-vault-grid" class="grid md:grid-cols-2 gap-5"></div>
+      </section>
+
+      <!-- ==================== VIEW 5: DYNAMIC AUTO-RESUME BUILDER ==================== -->
+      <section id="view-resume" class="hidden space-y-6">
+        <div class="no-print card-shadow rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded">📄 Live Auto-Resume Builder</span>
+            <h2 class="text-xl font-extrabold text-slate-900 mt-1">Udhay's Auto-Generated Data Engineering Resume</h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Automatically adds your completed Core Modules, Side-Skills, Capstones, and Official Certifications as you progress!
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="setResumeMode('verified')" id="res-mode-verified" class="px-3.5 py-2 rounded-lg text-xs font-bold coursera-blue text-white transition">
+              ✓ My Verified Progress Only
+            </button>
+            <button onclick="setResumeMode('preview')" id="res-mode-preview" class="px-3.5 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 transition">
+              👁 Preview Full 2028 Target CV
+            </button>
+            <button onclick="window.print()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">
+              🖨 Export Clean 1-Page PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Editable Contact Details Bar -->
+        <div class="no-print card-shadow rounded-xl p-4 grid sm:grid-cols-4 gap-3">
+          <input id="cv-email" type="text" value="udhay.ub.data@gmail.com" onchange="saveCVMeta()" placeholder="Email" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900" />
+          <input id="cv-phone" type="text" value="+91 98765 XXXXX • Tamil Nadu" onchange="saveCVMeta()" placeholder="Phone" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900" />
+          <input id="cv-github" type="text" value="github.com/udhay-ub | linkedin.com/in/udhay-ub" onchange="saveCVMeta()" placeholder="GitHub URL" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900" />
+          <input id="cv-college" type="text" value="B.E. Computer Science & Engineering (2024 – 2028)" onchange="saveCVMeta()" placeholder="College & Degree" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900" />
+        </div>
+
+        <!-- THE LIVE PRINTABLE ATS RESUME SHEET -->
+        <div id="resume-paper" class="bg-white text-slate-900 rounded-2xl p-8 sm:p-10 shadow-lg max-w-4xl mx-auto border border-slate-200">
+          <div class="border-b-2 border-slate-900 pb-4 mb-4 flex flex-wrap justify-between items-end gap-4">
+            <div>
+              <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">UDHAY ("UB")</h1>
+              <p class="text-sm font-bold text-blue-700 mt-0.5">Cloud & AI Data Engineer | Lakehouse, Streaming & RAG Pipeline Specialist</p>
+            </div>
+            <div class="text-right text-xs text-slate-700 space-y-0.5 font-medium">
+              <div id="cv-out-email">udhay.ub.data@gmail.com</div>
+              <div id="cv-out-phone">+91 98765 XXXXX • Tamil Nadu, India</div>
+              <div id="cv-out-github" class="text-blue-700 font-semibold">github.com/udhay-ub | linkedin.com/in/udhay-ub</div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h2 class="text-xs font-extrabold uppercase tracking-widest text-slate-900 border-b border-slate-300 pb-1 mb-1.5">Professional Summary</h2>
+            <p id="cv-summary-text" class="text-xs text-slate-700 leading-relaxed"></p>
+          </div>
+
+          <div class="mb-4">
+            <h2 class="text-xs font-extrabold uppercase tracking-widest text-slate-900 border-b border-slate-300 pb-1 mb-1.5">Technical & Complementary Engineering Skills</h2>
+            <div id="cv-skills-list" class="space-y-1 text-xs text-slate-800"></div>
+          </div>
+
+          <div class="mb-4">
+            <h2 class="text-xs font-extrabold uppercase tracking-widest text-slate-900 border-b border-slate-300 pb-1 mb-1.5">Data Engineering Projects & Proof-of-Work</h2>
+            <div id="cv-projects-list" class="space-y-3 text-xs text-slate-800"></div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-6">
+            <div>
+              <h2 class="text-xs font-extrabold uppercase tracking-widest text-slate-900 border-b border-slate-300 pb-1 mb-1.5">Education</h2>
+              <p id="cv-out-college" class="text-xs font-bold text-slate-900">B.E. Computer Science & Engineering (2024 – 2028)</p>
+              <p class="text-xs text-slate-600 mt-0.5">Focus: Cloud Data Engineering, Distributed Lakehouses, AI Vector Pipelines</p>
+            </div>
+            <div>
+              <h2 class="text-xs font-extrabold uppercase tracking-widest text-slate-900 border-b border-slate-300 pb-1 mb-1.5">Official Certifications & Verified Badges</h2>
+              <ul id="cv-certs-list" class="list-disc list-inside text-xs text-slate-800 space-y-1"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 6: TECH RADAR & LIVE BUZZ ==================== -->
+      <section id="view-radar" class="hidden space-y-6">
+        <div class="card-shadow rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase text-blue-700 bg-blue-50 px-2.5 py-1 rounded">📡 2026–2030 Tech Radar</span>
+            <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Latest Data, Cloud & AI Buzz</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Track high-growth 2030 technologies and fetch live industry articles.</p>
+          </div>
+
+          <button onclick="fetchLiveTechNews()" class="px-4 py-2.5 rounded-lg coursera-blue hover:bg-blue-700 text-white text-xs font-bold transition shadow-sm">
+            ⚡ Fetch Live Tech Buzz (API)
+          </button>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button onclick="filterRadar('all', this)" class="radar-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold coursera-blue text-white">All 2030 Shifts</button>
+          <button onclick="filterRadar('Lakehouse', this)" class="radar-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">🧊 Open Lakehouse</button>
+          <button onclick="filterRadar('AI-Data', this)" class="radar-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">🤖 AI & Vector RAG</button>
+          <button onclick="filterRadar('Speed', this)" class="radar-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">🚀 Rust Engines</button>
+          <button onclick="filterRadar('FinOps', this)" class="radar-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700">💰 Cloud FinOps</button>
+        </div>
+
+        <div id="radar-curated-grid" class="grid md:grid-cols-2 gap-5"></div>
+
+        <div class="card-shadow rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-base font-bold text-slate-900">🌐 Live Global Data & AI Engineering Feed</h3>
+              <p class="text-xs text-slate-500">Real-time articles pulled from Dev.to & Hacker News Data Engineering tags:</p>
+            </div>
+            <span id="live-feed-status" class="text-xs text-slate-400 font-medium">Click "Fetch Live Tech Buzz" above</span>
+          </div>
+          <div id="live-news-container" class="grid sm:grid-cols-2 gap-3">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-500">
+              Click "⚡ Fetch Live Tech Buzz (API)" above to pull today's live articles on Data Engineering, Apache Iceberg, Snowflake, and AI Agents.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 7: AI DOUBT SOLVER ==================== -->
+      <section id="view-aitutor" class="hidden space-y-6">
+        <div class="card-shadow rounded-2xl p-6">
+          <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200">
+            <div>
+              <span class="text-xs font-bold text-blue-700 uppercase">24/7 Personal Teaching Assistant</span>
+              <h2 class="text-2xl font-extrabold text-slate-900">✨ Udhay's AI Doubt Solver</h2>
+            </div>
+
+            <select id="ai-mode" onchange="toggleAIConfig()" class="bg-slate-100 border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-800">
+              <option value="gemini">🌐 Google Gemini API (Ask Anything, like ChatGPT)</option>
+              <option value="builtin">⚡ Instant Built-In Data Eng. Tutor (No Key Needed)</option>
+              <option value="ollama">🍎 Local M5 Ollama (100% Free Offline LLM)</option>
+            </select>
+          </div>
+
+          <div id="gemini-config" class="hidden mt-4 p-3.5 bg-blue-50 rounded-xl border border-blue-200 flex flex-wrap items-center justify-between gap-3">
+            <div class="text-xs text-slate-700">
+              <strong>Google Gemini Mode:</strong> Get a free key from <a href="https://aistudio.google.com/app/apikey" target="_blank" class="underline text-blue-700 font-semibold">Google AI Studio</a>.
+            </div>
+            <div class="flex gap-2 w-full sm:w-auto">
+              <input id="gemini-key-input" type="password" placeholder="Paste AIzaSy... key"
+                class="flex-1 sm:w-64 px-3 py-1.5 rounded-lg border border-slate-300 text-xs bg-white" />
+              <button onclick="saveGeminiKey()" class="px-3 py-1.5 rounded-lg coursera-blue text-white text-xs font-semibold">Save Key</button>
+            </div>
+          </div>
+
+          <div id="ollama-config" class="hidden mt-4 p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-slate-700">
+            <strong>MacBook Air M5 Local Ollama Mode:</strong> Run <code class="font-mono-code bg-white px-2 py-0.5 rounded border">OLLAMA_ORIGINS="*" ollama serve</code> in your Mac terminal.
+          </div>
+
+          <div class="mt-4 flex flex-wrap gap-2">
+            <button onclick="sendQuickPrompt('Explain SQL Window Functions (ROW_NUMBER vs RANK vs DENSE_RANK) with an example.')" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 px-3 py-1.5 rounded-full transition">
+              💡 SQL Window Functions
+            </button>
+            <button onclick="sendQuickPrompt('Which free official certificates should I prioritize first for my resume?')" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 px-3 py-1.5 rounded-full transition">
+              🏆 Best Free Certificates
+            </button>
+            <button onclick="sendQuickPrompt('What is Apache Iceberg and why is it huge for 2030?')" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 px-3 py-1.5 rounded-full transition">
+              🧊 Apache Iceberg (2030)
+            </button>
+            <button onclick="sendQuickPrompt('How does an AI RAG Vector Pipeline work for Capstone #3?')" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 px-3 py-1.5 rounded-full transition">
+              🤖 AI RAG Pipeline
+            </button>
+          </div>
+
+          <div id="chat-box" class="mt-4 h-96 overflow-y-auto bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4 text-sm">
+            <div class="flex items-start gap-3">
+              <div class="h-8 w-8 rounded-lg coursera-blue text-white flex items-center justify-center font-bold text-xs shrink-0">AI</div>
+              <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-none p-4 text-slate-800 shadow-sm max-w-2xl leading-relaxed">
+                Vanakkam <strong>Udhay (UB)</strong>! Welcome to <strong>Udhay's Learning</strong>. Ask me anything: SQL, Python, AWS, Snowflake, PySpark, certificates, or any general doubt. I remember our chat, so you can ask follow-up questions!
+              </div>
+            </div>
+          </div>
+
+          <form onsubmit="handleChatSubmit(event)" class="mt-4 flex gap-2">
+            <input id="chat-input" type="text" placeholder="Ask a doubt (e.g., 'How do Broadcast Joins work in PySpark?')..."
+              class="flex-1 px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-blue-600" />
+            <button type="submit" class="px-6 py-3 rounded-xl coursera-blue hover:bg-blue-700 text-white font-semibold text-sm transition">
+              Ask AI →
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW 8: STUDY LOG & M5 SETTINGS ==================== -->
+      <section id="view-tracker" class="hidden space-y-6">
+        <div class="grid lg:grid-cols-2 gap-6">
+          <div class="card-shadow rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-lg font-bold text-slate-900">⏱ Log Your Weekly Study Hours</h3>
+              <button onclick="resetWeeklyHours()" class="text-xs text-blue-700 font-semibold hover:underline">Start New Week ↻</button>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">Target: 6 to 8 hours every week (~30 hours/month).</p>
+
+            <div class="flex gap-2 mb-4">
+              <input id="log-hrs-input" type="number" step="0.5" min="0.5" max="10" value="1.0"
+                class="w-24 px-3 py-2 rounded-lg border border-slate-300 text-sm font-semibold" />
+              <input id="log-topic-input" type="text" placeholder="What topic did you study today, Udhay?"
+                class="flex-1 px-3 py-2 rounded-lg border border-slate-300 text-sm" />
+              <button onclick="addStudyLog()" class="px-4 py-2 rounded-lg coursera-blue text-white text-xs font-bold">
+                + Log
+              </button>
+            </div>
+
+            <div id="log-history-list" class="space-y-2 max-h-60 overflow-y-auto"></div>
+          </div>
+
+          <div class="space-y-6">
+            <div class="card-shadow rounded-2xl p-6">
+              <h3 class="text-lg font-bold text-slate-900 mb-2">🍎 MacBook Air M5 (16GB / 512GB) Rules</h3>
+              <ul class="space-y-2.5 text-xs text-slate-700">
+                <li class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                  <strong>1. Container RAM Cap:</strong> Use <strong>OrbStack</strong> instead of Docker Desktop and limit memory to <strong>6GB–8GB</strong>.
+                </li>
+                <li class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                  <strong>2. 512GB SSD Hygiene:</strong> Store large datasets in <strong>AWS S3 Parquet</strong> or <strong>Google Colab</strong> and run <code class="font-mono-code bg-white px-1.5 py-0.5 rounded border">docker system prune -a</code> monthly.
+                </li>
+                <li class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                  <strong>3. Zero Thermal Throttling:</strong> Use native ARM64 builds for Postgres, Java 17, Python (`uv`), DuckDB, and Polars.
+                </li>
+              </ul>
+            </div>
+
+            <div class="card-shadow rounded-2xl p-6">
+              <h3 class="text-sm font-bold text-slate-900 mb-3">🔐 Security & Progress Backup</h3>
+              <div class="flex gap-2 mb-4">
+                <input id="new-pass-field" type="password" placeholder="New login password..."
+                  class="flex-1 px-3 py-2 rounded-lg border border-slate-300 text-xs" />
+                <button onclick="updatePassword()" class="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-semibold">
+                  Update Password
+                </button>
+              </div>
+              <div class="flex flex-wrap gap-2 pt-3 border-t border-slate-100">
+                <button onclick="exportBackup()" class="px-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+                  ⬇ Export Backup (.json)
+                </button>
+                <label class="px-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer">
+                  ⬆ Restore Backup
+                  <input type="file" accept=".json" onchange="importBackup(event)" class="hidden" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== CORE ENGINE SCRIPT ==================== -->
+  <script>
+    const quotes = [
+      { text: "Core skills get you the interview. Side-skills and official AWS, Google & Databricks badges get you the ₹15+ LPA offer.", author: "Udhay's Learning Protocol" },
+      { text: "You don't need 12 hours a day to win. 1 focused hour on weekdays and 3 hours on Sunday will make you an unstoppable Data Engineer by 2028.", author: "UB's Consistency Rule" },
+      { text: "Every lesson and official badge you check off here automatically writes a verified bullet point on your 2028 Data Engineering resume.", author: "Auto-Resume Engine" },
+      { text: "While others memorize syntax that AI generates in seconds, you are mastering Lakehouse architecture, Kafka streaming, and Cloud FinOps.", author: "2030 Layoff Immunity" }
+    ];
+
+    const techRadarItems = [
+      {
+        category: "Lakehouse",
+        badge: "🔥 2028–2030 STANDARD",
+        title: "Apache Iceberg & Snowflake/Databricks Interoperability",
+        summary: "Companies refuse to lock their data inside a single warehouse vendor. Snowflake, AWS, and Databricks now natively support Apache Iceberg on S3.",
+        ubAction: "Covered in Month 12 (Dec 2027) + Snowflake Data Lake Badge."
+      },
+      {
+        category: "Speed",
+        badge: "🚀 CLOUD COST KILLER",
+        title: "DuckDB & Polars Replace Heavy Spark Clusters for <100GB Data",
+        summary: "Enterprises are running Rust-powered Polars and in-process DuckDB on single nodes to slash cloud compute spend by 70%.",
+        ubAction: "Covered in Month 4 (Apr 2027) on your MacBook Air M5's 10-core CPU."
+      },
+      {
+        category: "AI-Data",
+        badge: "🤖 HIGHEST SALARY MULTIPLIER",
+        title: "Agentic RAG & Automated Unstructured Vector Pipelines",
+        summary: "Data Engineers now own the automated Airflow + Vector DB pipelines that feed clean PDFs/docs into enterprise AI agents.",
+        ubAction: "Covered in Month 15 (Mar 2028) + Google Cloud Vertex AI Badge."
+      },
+      {
+        category: "FinOps",
+        badge: "💰 LAYOFF SHIELD",
+        title: "Cloud FinOps: Cutting Snowflake & Databricks Compute Bills",
+        summary: "Engineers who know micro-partition pruning, warehouse auto-suspend, and clustering keys never get laid off.",
+        ubAction: "Covered in Month 7 (Jul 2027) + Snowflake Data Warehousing Badge."
+      }
+    ];
+
+    const modules = [
+      {
+        id: 1, code: "M01", date: "Jan 2027", phase: "Phase 1",
+        title: "SQL Core & M5 ARM64 PostgreSQL",
+        split: "4h Weekdays + 3h Sunday",
+        sideSkill: "Regular Expressions (Regex) & Dirty Data Cleaning",
+        sideWhy: "Real-world database strings are messy; Regex lets you extract emails, IDs, and phone numbers inside SQL & Python.",
+        certName: "HackerRank SQL (Basic & Intermediate) Verified Certificate (Free)",
+        certUrl: "https://www.hackerrank.com/skills-verification/sql_intermediate",
+        m5Tip: "Install native Apple Silicon Postgres.app and DBeaver. Uses <150MB RAM and 0% CPU heat.",
+        m5Cmd: "brew install --cask postgres-unofficial dbeaver-community",
+        impact: "SQL remains 60% of every fresher Data Engineering technical interview.",
+        resumeSkillCat: "Languages & Databases",
+        resumeSkills: ["SQL (PostgreSQL)", "Relational Schema Design", "Regex Data Parsing"],
+        resumeBullet: "Engineered normalized relational schemas and executed 50+ multi-table analytical queries and Regex text parsers in PostgreSQL.",
+        tasks: [
+          "Week 1: Install Postgres.app & DBeaver on M5; learn SELECT, WHERE, ORDER BY",
+          "Week 2: Master INNER, LEFT, FULL OUTER JOINs & multi-table queries",
+          "Week 3: Master GROUP BY, HAVING, CASE WHEN & Side-Skill: SQL Regex matching",
+          "Week 4: Solve 25 DataLemur SQL problems & pass HackerRank SQL Certificate"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 SQL Masterclass in Tamil (4.5 Hrs) — Code Your Future Tamil", url: "https://www.youtube.com/watch?v=thxSts52jls" },
+          { type: "tamil", name: "🇮🇳 Gowtham SB — SQL for Data Engineering in Tamil", url: "https://www.youtube.com/results?search_query=Gowtham+SB+SQL+in+Tamil+Data+Engineering" },
+          { type: "english", name: "🌐 SQL Full Course — Data with Baraa", url: "https://www.youtube.com/results?search_query=Data+with+Baraa+SQL+Full+Course" },
+          { type: "cert", name: "🏆 Take Free HackerRank SQL Certification Exam", url: "https://www.hackerrank.com/skills-verification/sql_intermediate" }
+        ]
+      },
+      {
+        id: 2, code: "M02", date: "Feb 2027", phase: "Phase 1",
+        title: "Advanced SQL (Window Functions & CTEs)",
+        split: "4h Weekdays + 3h Sunday",
+        sideSkill: "B-Tree Indexing & Query Execution Plans (EXPLAIN ANALYZE)",
+        sideWhy: "Knowing why a query takes 40 seconds and making it run in 0.2 seconds with composite indexes is a senior-level skill.",
+        certName: "HackerRank SQL (Advanced) Verified Certificate (Free)",
+        certUrl: "https://www.hackerrank.com/skills-verification/sql_advanced",
+        m5Tip: "Use EXPLAIN ANALYZE in local DBeaver to inspect query execution plans.",
+        m5Cmd: "EXPLAIN ANALYZE SELECT * FROM orders WHERE order_date >= '2027-01-01';",
+        impact: "AI writes basic SELECTs; humans are hired for Window Functions & query optimization.",
+        resumeSkillCat: "Languages & Databases",
+        resumeSkills: ["Advanced SQL Window Functions", "CTEs", "B-Tree Indexing & Query Tuning"],
+        resumeBullet: "Optimized slow analytical SQL queries using CTEs, B-Tree indexing, and Window Functions (ROW_NUMBER, LAG, LEAD, DENSE_RANK).",
+        tasks: [
+          "Week 1: Master ROW_NUMBER(), RANK(), and DENSE_RANK() partitioning",
+          "Week 2: Master LAG(), LEAD(), and rolling 7-day moving averages",
+          "Week 3: Refactor subqueries into CTEs + Side-Skill: B-Tree Indexing",
+          "Week 4: Solve 30 Medium/Hard SQL problems & pass HackerRank Advanced SQL Cert"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 SQL Window Functions & CTEs in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=SQL+Window+Functions+in+Tamil+Gowtham+SB" },
+          { type: "english", name: "🌐 Advanced SQL Window Functions — Maven Analytics / Ansh Lamba", url: "https://www.youtube.com/results?search_query=Advanced+SQL+Window+Functions+For+Data+Engineers" },
+          { type: "cert", name: "🏆 Take Free HackerRank SQL (Advanced) Certification", url: "https://www.hackerrank.com/skills-verification/sql_advanced" }
+        ]
+      },
+      {
+        id: 3, code: "M03", date: "Mar 2027", phase: "Phase 1",
+        title: "Python Data Automation & Google Colab",
+        split: "4h Weekdays + 3h Sunday",
+        sideSkill: "Unit Testing (`pytest`), Python `logging` & `.env` Secret Management",
+        sideWhy: "Production pipelines never use `print()` or hardcoded API passwords; they use `logging`, `.env`, and `pytest`.",
+        certName: "Kaggle / Google Colab Python & Pandas Official Certificate (Free)",
+        certUrl: "https://www.kaggle.com/learn/python",
+        m5Tip: "Use 'uv' locally on M5 and link Google Colaboratory for free cloud GPU/TPU notebook experiments.",
+        m5Cmd: "brew install uv && uv init udhay-pipeline && uv add pytest python-dotenv",
+        impact: "Automated Python API ingestion scripts replace manual file uploads.",
+        resumeSkillCat: "Languages & Databases",
+        resumeSkills: ["Python 3.12", "REST API Ingestion", "Google Colaboratory", "pytest & Modular Logging"],
+        resumeBullet: "Built fault-tolerant Python ETL scripts with automated pytest unit tests and structured logging to ingest REST APIs into PostgreSQL.",
+        tasks: [
+          "Week 1: Set up Python 3.12 with 'uv' on M5 + practice cloud notebooks in Google Colab",
+          "Week 2: Master JSON parsing, REST API pagination & error handling",
+          "Week 3: Side-Skill: Add `.env` secrets, `logging`, and `pytest` unit tests to scripts",
+          "Week 4: Build automated API -> Postgres pipeline & earn Kaggle/Colab Python Certificate"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Python Full Course in Tamil — Error Makes Clever (EMC)", url: "https://www.youtube.com/results?search_query=Error+Makes+Clever+Python+Full+Course+in+Tamil" },
+          { type: "tamil", name: "🇮🇳 Python for Data Engineering in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=Gowtham+SB+Python+in+Tamil+Data+Engineering" },
+          { type: "practice", name: "☁️ Open Google Colaboratory (Free Cloud Python Notebooks)", url: "https://colab.research.google.com/" },
+          { type: "cert", name: "🏆 Earn Free Kaggle Python & Pandas Certificate (Colab Compatible)", url: "https://www.kaggle.com/learn/python" }
+        ]
+      },
+      {
+        id: 4, code: "M04", date: "Apr 2027", phase: "Phase 1",
+        title: "2030 Speed Engines: DuckDB, Polars & Git",
+        split: "4h Weekdays + 3h Sunday",
+        sideSkill: "Technical Markdown Documentation, Mermaid Diagrams & SSH Keys",
+        sideWhy: "Recruiters judge your GitHub repos in 10 seconds based on your README architecture diagrams.",
+        certName: "GitHub Skills / Postman API Fundamentals Student Expert Badge (Free)",
+        certUrl: "https://skills.github.com/",
+        m5Tip: "DuckDB and Polars use all 10 M5 CPU cores to process 10M Parquet rows in 2 seconds.",
+        m5Cmd: "uv add polars duckdb pyarrow",
+        impact: "Single-node Rust engines (Polars/DuckDB) slash cloud compute bills by 70%.",
+        resumeSkillCat: "Big Data & High-Speed Engines",
+        resumeSkills: ["DuckDB", "Polars (Rust DataFrames)", "Apache Parquet", "Git/GitHub & SSH"],
+        resumeBullet: "Benchmarked and deployed high-speed single-node Parquet data pipelines using Polars and DuckDB, achieving 15x faster processing over legacy Pandas.",
+        tasks: [
+          "Week 1: Master macOS zsh terminal commands, SSH keys & GitHub branching",
+          "Week 2: Understand columnar Parquet file format vs slow CSV files",
+          "Week 3: Learn Polars & DuckDB on M5 + Side-Skill: Write Markdown Mermaid diagrams",
+          "Week 4: Complete GitHub Skills interactive course & Postman API Student Badge"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Git & GitHub Full Tutorial in Tamil — EMC", url: "https://www.youtube.com/results?search_query=Git+and+GitHub+Full+Tutorial+in+Tamil+EMC" },
+          { type: "english", name: "🌐 DuckDB & Polars Crash Course — MotherDuck", url: "https://www.youtube.com/results?search_query=DuckDB+and+Polars+Data+Engineering+Tutorial" },
+          { type: "cert", name: "🏆 Complete Official GitHub Skills Interactive Courses (Free)", url: "https://skills.github.com/" }
+        ]
+      },
+      {
+        id: 5, code: "M05", date: "May 2027", phase: "Phase 1",
+        title: "Data Modeling & Kimball Star Schema",
+        split: "4h Weekdays + 3h Sunday",
+        sideSkill: "Executive BI Storytelling (Google Looker Studio / PowerBI Basics)",
+        sideWhy: "Building a data warehouse is 10x more impressive when you connect a live 1-page executive dashboard on top of your Gold tables.",
+        certName: "Google Cloud Skills Boost: Data Analytics & BigQuery Badge (Free)",
+        certUrl: "https://www.cloudskillsboost.google/paths/18",
+        m5Tip: "Design ER diagrams in browser with dbdiagram.io and connect Google Looker Studio for free.",
+        m5Cmd: "duckdb ecommerce_warehouse.db",
+        impact: "Clean Fact & Dimension tables stop enterprise AI agents from hallucinating metrics.",
+        resumeSkillCat: "Cloud & Warehouse Architecture",
+        resumeSkills: ["Kimball Dimensional Modeling", "Star Schema (Fact/Dimension)", "SCD Type 2", "Looker Studio BI"],
+        resumeBullet: "Architected an OLAP Star Schema Data Warehouse with Fact tables and Slowly Changing Dimensions (SCD Type 2) powering an executive Looker Studio BI dashboard.",
+        tasks: [
+          "Week 1: Understand OLTP vs OLAP databases & Kimball Dimensional Modeling",
+          "Week 2: Master Fact vs Dimension Tables + Slowly Changing Dimensions (SCD Type 2)",
+          "Week 3: Side-Skill: Connect Google Looker Studio to visualize your Gold Star Schema",
+          "Week 4: Earn Google Cloud Data Analytics Skill Badge on Cloud Skills Boost"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Data Warehouse & Data Modeling in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=Data+Warehouse+Data+Modeling+in+Tamil+Gowtham+SB" },
+          { type: "english", name: "🌐 Data Modeling Full Course — Ansh Lamba", url: "https://www.youtube.com/watch?v=_jf7KZqne-8" },
+          { type: "cert", name: "🏆 Earn Google Cloud Data Engineer / BigQuery Skill Badges", url: "https://www.cloudskillsboost.google/paths/16" }
+        ]
+      },
+      {
+        id: 6, code: "M06", date: "Jun 2027", phase: "Phase 2",
+        title: "AWS S3 Data Lake & Serverless ETL",
+        split: "4h Weekdays + 3.5h Sunday",
+        sideSkill: "Cloud Networking & Security (VPC, Subnets, Security Groups & IAM Least Privilege)",
+        sideWhy: "90% of cloud pipeline failures in real companies happen because of VPC firewall or IAM permission errors.",
+        certName: "AWS Cloud Quest: Cloud Practitioner & AWS Educate Badges (Free Official Credly)",
+        certUrl: "https://explore.skillbuilder.aws/learn/course/external/view/elearning/11458/aws-cloud-quest-cloud-practitioner",
+        m5Tip: "Save your 512GB SSD! Stream raw datasets directly to AWS S3 Parquet buckets.",
+        m5Cmd: "brew install awscli && aws configure",
+        impact: "AWS S3 + Parquet is the permanent storage foundation of all cloud lakehouses.",
+        resumeSkillCat: "Cloud & Warehouse Architecture",
+        resumeSkills: ["AWS S3 Data Lake", "AWS Lambda", "AWS Glue & Athena", "IAM & VPC Security"],
+        resumeBullet: "Built a serverless event-driven AWS Data Lake using S3, Lambda, and Boto3 with least-privilege IAM policies to convert raw JSON payloads into partitioned Parquet tables.",
+        tasks: [
+          "Week 1: Create AWS Free Tier account; master S3 buckets + Side-Skill: IAM & VPC basics",
+          "Week 2: Write Python Boto3 scripts to upload partitioned Parquet files to S3",
+          "Week 3: Build an event-driven serverless ingestion function in AWS Lambda & Athena",
+          "Week 4: Earn Official AWS Cloud Quest Credly Badge on AWS Skill Builder (Free)"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 AWS for Data Engineers in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=AWS+Data+Engineering+in+Tamil+Gowtham+SB" },
+          { type: "english", name: "🌐 AWS Data Engineering Project — Darshil Parmar", url: "https://www.youtube.com/results?search_query=AWS+Data+Engineering+Full+Course+Darshil+Parmar" },
+          { type: "cert", name: "🏆 Earn Official AWS Cloud Quest Credly Badge (Free)", url: "https://explore.skillbuilder.aws/learn/course/external/view/elearning/11458/aws-cloud-quest-cloud-practitioner" }
+        ]
+      },
+      {
+        id: 7, code: "M07", date: "Jul 2027", phase: "Phase 2",
+        title: "Snowflake Cloud Warehouse & FinOps",
+        split: "4h Weekdays + 3h Sunday",
+        sideSkill: "Cloud FinOps (Compute Credit Monitoring, Auto-Suspend & Partition Pruning)",
+        sideWhy: "Engineers who prove they can slash a company's monthly Snowflake/AWS bill by 35% are immune to layoffs.",
+        certName: "Snowflake Hands-On Essentials: Data Warehousing Workshop Badge (Free Credly)",
+        certUrl: "https://learn.snowflake.com/en/pages/hands-on-essentials-track/",
+        m5Tip: "100% browser cloud execution—your fanless MacBook Air stays ice-cold.",
+        m5Cmd: "ALTER WAREHOUSE COMPUTE_WH SET AUTO_SUSPEND = 60;",
+        impact: "Cloud FinOps (cutting Snowflake compute spend) makes you completely layoff-proof.",
+        resumeSkillCat: "Cloud & Warehouse Architecture",
+        resumeSkills: ["Snowflake Data Cloud", "Snowpipe", "Micro-Partitioning", "Cloud FinOps Cost Optimization"],
+        resumeBullet: "Configured automated S3-to-Snowflake continuous ingestion via Snowpipe and implemented Cloud FinOps auto-suspend & clustering guardrails to reduce compute credits by 35%.",
+        tasks: [
+          "Week 1: Start Snowflake trial; learn Storage vs Compute separation",
+          "Week 2: Load S3 Parquet files into Snowflake using External Stages & Snowpipe",
+          "Week 3: Master Time Travel + Side-Skill: Cloud FinOps Resource Monitors",
+          "Week 4: Complete Snowflake Hands-On Essentials Workshop to earn official Credly Badge"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Snowflake Full Tutorial in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=Snowflake+in+Tamil+Gowtham+SB" },
+          { type: "english", name: "🌐 Snowflake Complete Course — Ansh Lamba / Data with Baraa", url: "https://www.youtube.com/results?search_query=Snowflake+Full+Course+Data+Engineering" },
+          { type: "cert", name: "🏆 Earn Official Snowflake Hands-On Essentials Credly Badge (Free)", url: "https://learn.snowflake.com/en/pages/hands-on-essentials-track/" }
+        ]
+      },
+      {
+        id: 8, code: "M08", date: "Aug 2027", phase: "Phase 2",
+        title: "Analytics Engineering with dbt Core",
+        split: "4h Weekdays + 3.5h Sunday",
+        sideSkill: "Data Contracts & Automated Data Quality Testing (`dbt-expectations`)",
+        sideWhy: "Catching broken or null data before the CEO sees a wrong revenue number is the #1 mark of a reliable Data Engineer.",
+        certName: "dbt Fundamentals Official Credential Badge by dbt Labs (Free)",
+        certUrl: "https://learn.getdbt.com/courses/dbt-fundamentals",
+        m5Tip: "Install dbt Core natively on macOS—compiles SQL models in milliseconds.",
+        m5Cmd: "uv tool install dbt-core --with dbt-snowflake",
+        impact: "Brings software engineering CI/CD, Git, and automated unit tests to SQL.",
+        resumeSkillCat: "Orchestration, dbt & DataOps",
+        resumeSkills: ["dbt Core (Data Build Tool)", "Jinja Macros", "Medallion Architecture", "Data Contracts & Quality Testing"],
+        resumeBullet: "Developed modular dbt transformation pipelines (Bronze → Silver → Gold) on Snowflake with automated data contracts, schema integrity tests, and lineage docs.",
+        tasks: [
+          "Week 1: Connect local dbt Core on your M5 to your Snowflake warehouse",
+          "Week 2: Build Bronze (Staging) -> Silver (Intermediate) -> Gold (Marts) models",
+          "Week 3: Write Jinja macros + Side-Skill: Data Contracts & `dbt-expectations` tests",
+          "Week 4: Complete dbt Labs Fundamentals course & claim official dbt Badge"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 dbt (Data Build Tool) Tutorial in Tamil", url: "https://www.youtube.com/results?search_query=dbt+data+build+tool+in+Tamil" },
+          { type: "english", name: "🌐 dbt Complete Masterclass — Ansh Lamba", url: "https://www.youtube.com/results?search_query=dbt+Data+Build+Tool+Full+Course+Snowflake" },
+          { type: "cert", name: "🏆 Earn Official dbt Fundamentals Badge (Free)", url: "https://learn.getdbt.com/courses/dbt-fundamentals" }
+        ]
+      },
+      {
+        id: 9, code: "M09", date: "Sep 2027", phase: "Phase 2",
+        title: "OrbStack, Airflow & Capstone #1",
+        split: "4h Weekdays + 4h Sunday",
+        sideSkill: "YAML Configuration, Crontab Scheduling & Linux Process Debugging (`htop`)",
+        sideWhy: "Every modern orchestration tool (Airflow, Docker Compose, Kubernetes, GitHub Actions) relies heavily on YAML and cron expressions.",
+        certName: "Astronomer Academy: Apache Airflow Fundamentals Preparation",
+        certUrl: "https://academy.astronomer.io/",
+        m5Tip: "Use OrbStack instead of Docker Desktop (cap RAM at 6GB, SSD at 50GB).",
+        m5Cmd: "brew install --cask orbstack && brew install astro",
+        impact: "Publishing your first automated cloud pipeline proves real production readiness.",
+        isCapstone: true,
+        capstoneTitle: "Capstone #1: Automated Cloud Batch Data Pipeline (API → AWS S3 → Snowflake → dbt → Airflow)",
+        resumeSkillCat: "Orchestration, dbt & DataOps",
+        resumeSkills: ["Apache Airflow (Astro CLI)", "Docker / OrbStack ARM64", "YAML & Cron Scheduling"],
+        resumeBullet: "CAPSTONE #1: Orchestrated an end-to-end production batch data pipeline using Dockerized Apache Airflow, ingesting live REST APIs into AWS S3 and transforming Gold tables in Snowflake via dbt.",
+        tasks: [
+          "Week 1: Install OrbStack + Astro CLI to run ARM64 Apache Airflow locally",
+          "Week 2: Master Airflow DAGs, TaskFlow API + Side-Skill: YAML & Cron scheduling",
+          "Week 3: Orchestrate API -> S3 -> Snowflake -> dbt inside one automated DAG",
+          "Week 4: Publish Capstone #1 on GitHub + complete Astronomer Academy Airflow 101"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Apache Airflow & Docker in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=Apache+Airflow+in+Tamil+Gowtham+SB" },
+          { type: "english", name: "🌐 Apache Airflow Full Course — Marc Lamberti / Darshil Parmar", url: "https://www.youtube.com/results?search_query=Apache+Airflow+Full+Course+Data+Engineering" },
+          { type: "cert", name: "🏆 Astronomer Academy Free Apache Airflow Learning Path", url: "https://academy.astronomer.io/" }
+        ]
+      },
+      {
+        id: 10, code: "M10", date: "Oct 2027", phase: "Phase 3",
+        title: "Apache Spark & PySpark (M5 + Google Colab)",
+        split: "4h Weekdays + 3.5h Sunday",
+        sideSkill: "Spark UI Debugging, JVM Memory Management & Fixing Out-Of-Memory (OOM) Errors",
+        sideWhy: "In ₹12–18 LPA interviews, the #1 scenario question is: 'Your PySpark job crashed with an OOM error—how do you debug it in Spark UI?'",
+        certName: "Google Cloud Skills Boost: Serverless Spark with Dataproc Skill Badge",
+        certUrl: "https://www.cloudskillsboost.google/paths/16",
+        m5Tip: "Run PySpark locally on M5 cores OR inside Google Colaboratory notebooks for zero local setup!",
+        m5Cmd: "brew install --cask temurin@17 && uv add pyspark",
+        impact: "₹12–18 LPA interviews deeply test Spark shuffles, broadcast joins & skew.",
+        resumeSkillCat: "Big Data & High-Speed Engines",
+        resumeSkills: ["Apache Spark", "PySpark DataFrames & SQL", "Spark UI & OOM Tuning", "Broadcast Joins"],
+        resumeBullet: "Processed 10M+ row distributed datasets in PySpark (Local M5 & Google Colab), eliminating shuffle bottlenecks and OOM errors via Broadcast Joins and partition tuning.",
+        tasks: [
+          "Week 1: Run PySpark in Google Colab & locally on M5; learn Driver vs Executors",
+          "Week 2: Master PySpark DataFrames, Transformations vs Actions & Lazy Evaluation",
+          "Week 3: Optimize Broadcast Joins + Side-Skill: Debug Spark UI & OOM errors",
+          "Week 4: Process 10M+ row dataset & earn Google Cloud Dataproc Spark Badge"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 PySpark Full Tutorial in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=PySpark+in+Tamil+Gowtham+SB" },
+          { type: "tamil", name: "🇮🇳 PySpark 8-Hour Live Class in Tamil — BigDatapedia", url: "https://www.youtube.com/watch?v=F95NA3xBY9Q" },
+          { type: "english", name: "🌐 PySpark Zero to Pro Full Course — Ansh Lamba", url: "https://www.youtube.com/results?search_query=Ansh+Lamba+PySpark+Full+Course" },
+          { type: "cert", name: "🏆 Google Cloud Serverless Spark / Data Engineer Path", url: "https://www.cloudskillsboost.google/paths/16" }
+        ]
+      },
+      {
+        id: 11, code: "M11", date: "Nov 2027", phase: "Phase 3",
+        title: "Databricks & Medallion Delta Lakehouse",
+        split: "4h Weekdays + 3.5h Sunday",
+        sideSkill: "Lakehouse Secret Scopes, Cluster Autoscaling & Spot Instance Cost Control",
+        sideWhy: "Knowing how to use AWS Spot Instances and Databricks Secret Scopes shows enterprise cloud maturity.",
+        certName: "Academy Accreditation: Databricks Lakehouse Fundamentals Badge (Free Official)",
+        certUrl: "https://www.databricks.com/learn/training/lakehouse-fundamentals",
+        m5Tip: "Offload multi-node Spark compute to Databricks Cloud so your M5 stays cool.",
+        m5Cmd: "OPTIMIZE gold_sales ZORDER BY (customer_id);",
+        impact: "Databricks + Delta Lake powers India's top GCCs (JPMorgan, Walmart, Target, Optum).",
+        resumeSkillCat: "Cloud & Warehouse Architecture",
+        resumeSkills: ["Databricks Lakehouse", "Delta Lake (ACID)", "Delta Live Tables (DLT)", "Liquid Clustering"],
+        resumeBullet: "Built a Medallion Lakehouse architecture on Databricks using Delta Live Tables (DLT), implementing ACID MERGE upserts and Z-Order / Liquid Clustering.",
+        tasks: [
+          "Week 1: Set up Databricks workspace & master Delta Lake ACID transaction logs",
+          "Week 2: Build Bronze -> Silver -> Gold tables using Delta Live Tables (DLT)",
+          "Week 3: Optimize with Liquid Clustering + Side-Skill: Secret Scopes & Autoscaling",
+          "Week 4: Pass Official Databricks Lakehouse Fundamentals Accreditation (Free Badge)"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Databricks & Delta Lake in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=Databricks+in+Tamil+Gowtham+SB" },
+          { type: "english", name: "🌐 Databricks Zero to Hero Masterclass — Ansh Lamba", url: "https://www.youtube.com/results?search_query=Ansh+Lamba+Databricks+Tutorial+Zero+to+Hero" },
+          { type: "cert", name: "🏆 Earn Free Official Databricks Lakehouse Fundamentals Badge", url: "https://www.databricks.com/learn/training/lakehouse-fundamentals" }
+        ]
+      },
+      {
+        id: 12, code: "M12", date: "Dec 2027", phase: "Phase 3",
+        title: "2030 Standard: Apache Iceberg & Governance",
+        split: "4h Weekdays + 3h Sunday",
+        sideSkill: "PII Data Masking, GDPR / India DPDP Privacy Compliance & Data Lineage",
+        sideWhy: "Banks and Healthcare GCCs will immediately hire a fresher who understands PII masking and India's DPDP data privacy rules.",
+        certName: "Snowflake Hands-On Essentials: Data Lake Badge (Free Official Credly)",
+        certUrl: "https://learn.snowflake.com/en/pages/hands-on-essentials-track/",
+        m5Tip: "Query open Apache Iceberg tables on S3 directly from both DuckDB and Spark.",
+        m5Cmd: "INSTALL iceberg; LOAD iceberg; -- Inside DuckDB",
+        impact: "Open Table Formats (Apache Iceberg) dominate by eliminating vendor lock-in.",
+        resumeSkillCat: "Cloud & Warehouse Architecture",
+        resumeSkills: ["Apache Iceberg (Open Lakehouse)", "Databricks Unity Catalog", "PII Masking & Data Governance"],
+        resumeBullet: "Implemented interoperable Apache Iceberg open lakehouse tables on AWS S3 with fine-grained PII column masking and data lineage via Unity Catalog.",
+        tasks: [
+          "Week 1: Understand Apache Iceberg metadata trees, snapshots & hidden partitioning",
+          "Week 2: Create & query interoperable Iceberg tables on AWS S3",
+          "Week 3: Configure Unity Catalog + Side-Skill: Dynamic PII Data Masking",
+          "Week 4: Earn Official Snowflake Data Lake Credly Badge (Free)"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Apache Iceberg & Unity Catalog in Tamil", url: "https://www.youtube.com/results?search_query=Data+Lakehouse+Apache+Iceberg+Unity+Catalog+in+Tamil" },
+          { type: "english", name: "🌐 Apache Iceberg & Unity Catalog Tutorial — Ansh Lamba", url: "https://www.youtube.com/results?search_query=Apache+Iceberg+and+Unity+Catalog+Tutorial" },
+          { type: "cert", name: "🏆 Earn Free Snowflake Data Lake Credly Badge", url: "https://learn.snowflake.com/en/pages/hands-on-essentials-track/" }
+        ]
+      },
+      {
+        id: 13, code: "M13", date: "Jan 2028", phase: "Phase 3",
+        title: "Real-Time Streaming (Kafka KRaft + Spark)",
+        split: "4h Weekdays + 4h Sunday",
+        sideSkill: "Dead-Letter Queues (DLQ), Schema Registry & Stream Backpressure Handling",
+        sideWhy: "Real-time streams break when bad JSON arrives; routing corrupted events to a Dead-Letter Queue (DLQ) keeps your pipeline alive 24/7.",
+        certName: "Confluent Developer: Apache Kafka Fundamentals Accreditation (Free)",
+        certUrl: "https://developer.confluent.io/courses/apache-kafka/events/",
+        m5Tip: "Run Apache Kafka in KRaft mode inside OrbStack—cuts RAM usage in half on 16GB M5.",
+        m5Cmd: "docker run -d --name kafka -p 9092:9092 apache/kafka:latest",
+        impact: "Real-time streaming powers live AI personalization and instant fraud blocking.",
+        isCapstone: true,
+        capstoneTitle: "Capstone #2: Real-Time Event Streaming Pipeline (Apache Kafka KRaft → Spark Structured Streaming → Delta Lake)",
+        resumeSkillCat: "Big Data & High-Speed Engines",
+        resumeSkills: ["Apache Kafka (KRaft)", "Spark Structured Streaming", "Dead-Letter Queues (DLQ) & Watermarking"],
+        resumeBullet: "CAPSTONE #2: Engineered a low-latency real-time streaming pipeline using Apache Kafka (KRaft) and Spark Structured Streaming with Dead-Letter Queue (DLQ) fault handling into Delta Lake.",
+        tasks: [
+          "Week 1: Spin up lightweight ARM64 Kafka (KRaft mode) in OrbStack",
+          "Week 2: Write Python Kafka Producers & Consumers for live payment events",
+          "Week 3: Spark Structured Streaming + Side-Skill: Dead-Letter Queue (DLQ) routing",
+          "Week 4: Publish Capstone #2 on GitHub & complete Confluent Kafka 101 Course"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Apache Kafka & Streaming in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=Apache+Kafka+in+Tamil+Gowtham+SB" },
+          { type: "english", name: "🌐 Real-Time Kafka + Spark Project — Darshil Parmar", url: "https://www.youtube.com/results?search_query=Kafka+Spark+Streaming+End+to+End+Data+Engineering+Project" },
+          { type: "cert", name: "🏆 Confluent Official Apache Kafka 101 Free Course", url: "https://developer.confluent.io/courses/apache-kafka/events/" }
+        ]
+      },
+      {
+        id: 14, code: "M14", date: "Feb 2028", phase: "Phase 3",
+        title: "Flagship Cloud Data Certification Sprint",
+        split: "4h Weekdays + 3.5h Sunday",
+        sideSkill: "Distributed Systems Trade-offs (CAP Theorem, Idempotency & Exactly-Once Delivery)",
+        sideWhy: "Helps you ace both the official certification exam and high-level architectural interviews.",
+        certName: "🏆 FLAGSHIP EXAM: Databricks Certified Data Engineer Associate (or AWS DEA-C01)",
+        certUrl: "https://www.databricks.com/learn/certification/data-engineer-associate",
+        m5Tip: "Run 'docker system prune -a' on OrbStack to keep 300GB+ SSD free.",
+        m5Cmd: "docker system prune -a --volumes",
+        impact: "Passing Databricks Associate or AWS Data Engineer bypasses campus ATS filters.",
+        resumeCert: "Databricks Certified Data Engineer Associate (Official Industry Certification)",
+        resumeSkillCat: "Cloud & Warehouse Architecture",
+        resumeSkills: ["Distributed Systems Architecture (Idempotency, Exactly-Once)"],
+        resumeBullet: "Earned official industry certification validating production proficiency in Apache Spark, Delta Live Tables, and Medallion Lakehouse governance.",
+        tasks: [
+          "Week 1: Review Spark architecture, Delta Live Tables & Unity Catalog",
+          "Week 2: Side-Skill: Master Idempotency, CAP Theorem & Exactly-Once semantics",
+          "Week 3: Take 3 full-length timed practice exams (aim for >85% score)",
+          "Week 4: Pass official Databricks Certified Data Engineer Associate (or AWS) exam"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Databricks & AWS Certification Guide in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=Databricks+Certification+in+Tamil+Gowtham+SB" },
+          { type: "english", name: "🌐 Databricks Data Engineer Associate Full Prep", url: "https://www.youtube.com/results?search_query=Databricks+Certified+Data+Engineer+Associate+Full+Course" },
+          { type: "cert", name: "🏆 Official Databricks Data Engineer Associate Registration", url: "https://www.databricks.com/learn/certification/data-engineer-associate" }
+        ]
+      },
+      {
+        id: 15, code: "M15", date: "Mar 2028", phase: "Phase 4",
+        title: "M5 Neural Engine: 2030 AI RAG Pipelines",
+        split: "4h Weekdays + 4h Sunday",
+        sideSkill: "Semantic Chunking, Embedding Token Costing & LLM Hallucination Evaluation",
+        sideWhy: "Makes you the bridge between Data Engineering and AI Engineering—the most lucrative role of 2028–2030.",
+        certName: "Google Cloud Skills Boost: Introduction to Generative AI & Vertex AI Badge (Free)",
+        certUrl: "https://www.cloudskillsboost.google/paths/118",
+        m5Tip: "SUPERPOWER: Run Ollama natively on M5 16GB Unified Memory for ₹0 API cost!",
+        m5Cmd: "brew install ollama && ollama pull nomic-embed-text && ollama pull llama3.2",
+        impact: "The highest-paid 2030 skill crossover—feeding clean vector embeddings to AI agents.",
+        isCapstone: true,
+        capstoneTitle: "Capstone #3: Automated Enterprise AI RAG & Vector Data Pipeline (Airflow → Ollama M5 Embeddings → PostgreSQL pgvector)",
+        resumeSkillCat: "2030 AI Data Engineering & Vector RAG",
+        resumeSkills: ["AI RAG Data Pipelines", "Vector Databases (pgvector)", "Ollama Local LLM Embeddings", "Google Colab / Vertex AI"],
+        resumeBullet: "CAPSTONE #3: Architected an automated AI Retrieval-Augmented Generation (RAG) data pipeline that chunks unstructured PDFs, generates local vector embeddings on Apple Silicon (Ollama), and indexes into PostgreSQL pgvector.",
+        tasks: [
+          "Week 1: Install Ollama on M5 Mac + spin up PostgreSQL pgvector in OrbStack",
+          "Week 2: Write Python pipeline for semantic chunking of PDFs & Markdown docs",
+          "Week 3: Generate embeddings locally on M5 + Side-Skill: RAG relevance evaluation",
+          "Week 4: Publish Capstone #3 on GitHub & earn Google Cloud Generative AI Badge"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 RAG, Vector DB & Ollama AI in Tamil", url: "https://www.youtube.com/results?search_query=RAG+Vector+Database+Ollama+in+Tamil" },
+          { type: "english", name: "🌐 Local AI RAG Pipeline with Ollama & Python — Pixegami", url: "https://www.youtube.com/results?search_query=Local+RAG+Pipeline+Python+Ollama+Tutorial" },
+          { type: "cert", name: "🏆 Earn Free Google Cloud Generative AI Skill Badge", url: "https://www.cloudskillsboost.google/paths/118" }
+        ]
+      },
+      {
+        id: 16, code: "M16", date: "Apr 2028", phase: "Phase 4",
+        title: "DataOps: Terraform & GitHub CI/CD",
+        split: "4h Weekdays + 3h Sunday",
+        sideSkill: "Automated Code Formatting (`ruff`), Pre-Commit Hooks & Git Secret Scanning",
+        sideWhy: "Prevents you from ever accidentally pushing AWS secret keys to GitHub and keeps your Python code Pep-8 clean automatically.",
+        certName: "AWS Skill Builder / HashiCorp Terraform Tutorials Completion",
+        certUrl: "https://developer.hashicorp.com/terraform/tutorials/aws-get-started",
+        m5Tip: "Native ARM64 Terraform CLI provisions cloud infrastructure in seconds.",
+        m5Cmd: "brew tap hashicorp/tap && brew install hashicorp/tap/terraform ruff",
+        impact: "Combining Cloud DevOps with Data Engineering makes you a 2-in-1 hire.",
+        resumeSkillCat: "Orchestration, dbt & DataOps",
+        resumeSkills: ["Terraform (IaC)", "GitHub Actions CI/CD", "Ruff Linting & Pre-Commit Security"],
+        resumeBullet: "Automated cloud infrastructure provisioning (AWS S3, IAM, Snowflake stages) using Terraform IaC and deployed CI/CD test and linting workflows via GitHub Actions.",
+        tasks: [
+          "Week 1: Install Terraform on M5 & learn HCL syntax, State & Providers",
+          "Week 2: Write Terraform scripts to deploy AWS S3 buckets & Snowflake tables",
+          "Week 3: Build GitHub Actions CI/CD + Side-Skill: `ruff` linter & secret scanning",
+          "Week 4: Add Infrastructure-as-Code & CI/CD passing badges to all 3 Capstone repos"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Terraform & GitHub Actions in Tamil", url: "https://www.youtube.com/results?search_query=Terraform+and+GitHub+Actions+in+Tamil" },
+          { type: "english", name: "🌐 Terraform & CI/CD Crash Course — TechWorld with Nana", url: "https://www.youtube.com/results?search_query=TechWorld+with+Nana+Terraform+GitHub+Actions" },
+          { type: "cert", name: "🏆 Official HashiCorp Terraform AWS Tutorials", url: "https://developer.hashicorp.com/terraform/tutorials/aws-get-started" }
+        ]
+      },
+      {
+        id: 17, code: "M17", date: "May 2028", phase: "Phase 4",
+        title: "DSA Filter Prep & Data System Design",
+        split: "4h Weekdays + 3.5h Sunday",
+        sideSkill: "Big-O Time/Space Complexity Analysis & Excalidraw Architecture Communication",
+        sideWhy: "Explaining your trade-offs clearly out loud while drawing on a whiteboard is what seals the final round.",
+        certName: "HackerRank Problem Solving (Python Basic & Intermediate) Certificate (Free)",
+        certUrl: "https://www.hackerrank.com/skills-verification/problem_solving_basic",
+        m5Tip: "Practice timed OA problems in browser + architecture whiteboarding in Excalidraw.",
+        m5Cmd: "# Python HashMaps, Two Pointers, Sliding Window & BFS/DFS",
+        impact: "Clears campus Online Assessments (OAs) and final architectural rounds.",
+        resumeSkillCat: "Languages & Databases",
+        resumeSkills: ["Data Structures & Algorithms (Python)", "System Design & Big-O Analysis"],
+        resumeBullet: "Solved 150+ SQL and Python Data Structures problems and designed fault-tolerant distributed architectures for real-time telemetry.",
+        tasks: [
+          "Week 1: Solve 20 Easy/Med Python problems on Arrays, Strings & HashMaps",
+          "Week 2: Solve 20 problems on Two Pointers, Sliding Window & Binary Search",
+          "Week 3: Solve 20 Trees/Graphs problems + Side-Skill: Big-O Complexity drills",
+          "Week 4: Practice 6 Data System Design cases & pass HackerRank Problem Solving Cert"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Data Engineering System Design in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=Data+Engineering+System+Design+in+Tamil+Gowtham+SB" },
+          { type: "practice", name: "💻 NeetCode 150 — Free Python DSA Practice", url: "https://neetcode.io/practice" },
+          { type: "cert", name: "🏆 Take Free HackerRank Problem Solving Certification", url: "https://www.hackerrank.com/skills-verification/problem_solving_basic" }
+        ]
+      },
+      {
+        id: 18, code: "M18", date: "Jun 2028", phase: "Phase 4",
+        title: "Portfolio Launch & Placement Victory",
+        split: "4h Weekdays + 3.5h Sunday",
+        sideSkill: "3-Minute Loom Architecture Storytelling, Cold Referrals & Salary Negotiation",
+        sideWhy: "Sending a 3-minute Loom video of your architecture diagram to a hiring manager on LinkedIn gets 10x more interview calls than cold applying.",
+        certName: "Udhay's Learning — Complete 2028 Cloud & AI Data Engineer Portfolio Verified",
+        certUrl: "https://github.com/",
+        m5Tip: "Use macOS screen recorder (Cmd+Shift+5) to record crisp 3-minute walkthroughs.",
+        m5Cmd: "# Cmd + Shift + 5 -> Record 3-min Architecture Walkthrough",
+        impact: "Hiring managers love 3-minute architecture videos—gets you shortlisted immediately.",
+        resumeSkillCat: "Orchestration, dbt & DataOps",
+        resumeSkills: ["Technical Architecture Storytelling", "Agile DataOps"],
+        resumeBullet: "Published open-source production data engineering portfolio featuring Batch Lakehouse, Real-Time Kafka Streaming, and Local M5 AI Vector RAG architectures.",
+        tasks: [
+          "Week 1: Record 3-minute video walkthroughs for Capstones #1, #2, and #3",
+          "Week 2: Export your 1-Page Auto-Resume PDF from Udhay's Learning & update LinkedIn",
+          "Week 3: Side-Skill: Send personalized LinkedIn referral messages to GCC Engineers",
+          "Week 4: Complete mock interviews and crack your ₹12–20+ LPA placement offer!"
+        ],
+        resources: [
+          { type: "tamil", name: "🇮🇳 Data Engineer Resume & Interview Tips in Tamil — Gowtham SB", url: "https://www.youtube.com/results?search_query=Gowtham+SB+Data+Engineer+Resume+Interview+Tamil" },
+          { type: "english", name: "🌐 Data Engineering Portfolio Guide — Darshil Parmar", url: "https://www.youtube.com/results?search_query=Darshil+Parmar+Data+Engineering+Resume+Portfolio" }
+        ]
+      }
+    ];
+
+    const STORAGE_KEY = 'udhays_learning_v8_coursera';
+    let rawSaved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('udhays_learning_v7_state') || localStorage.getItem('ub_os_v6_state') || localStorage.getItem('ub_academy_lms_v5');
+    let state = JSON.parse(rawSaved || JSON.stringify({
+      passcode: 'ub2027',
+      checked: {},
+      certsEarned: {},
+      notes: {},
+      weekHours: 0,
+      totalHours: 0,
+      logs: [],
+      geminiKey: '',
+      cvMeta: {
+        email: 'udhay.ub.data@gmail.com',
+        phone: '+91 98765 XXXXX • Tamil Nadu, India',
+        github: 'github.com/udhay-ub | linkedin.com/in/udhay-ub',
+        college: 'B.E. Computer Science & Engineering (2024 – 2028)'
+      }
+    }));
+
+    if (!state.certsEarned) state.certsEarned = {};
+    if (!state.cvMeta) {
+      state.cvMeta = {
+        email: 'udhay.ub.data@gmail.com',
+        phone: '+91 98765 XXXXX • Tamil Nadu, India',
+        github: 'github.com/udhay-ub | linkedin.com/in/udhay-ub',
+        college: 'B.E. Computer Science & Engineering (2024 – 2028)'
+      };
+    }
+
+    let currentActiveMonthId = 1;
+    let currentCatalogFilter = 'all';
+    let currentRadarFilter = 'all';
+    let resumeMode = 'verified';
+    let quoteIndex = 0;
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      updateAllMetrics();
+      renderAutoResume();
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('login-user').value.trim().toLowerCase();
+      const pass = document.getElementById('login-pass').value;
+      if ((user === 'ub' || user === 'udhay') && pass === state.passcode) {
+        sessionStorage.setItem('udhay_v8_unlocked', 'true');
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('app-shell').classList.remove('hidden');
+        initPortal();
+      } else {
+        document.getElementById('login-error').classList.remove('hidden');
+      }
+    }
+
+    function lockApp() {
+      sessionStorage.removeItem('udhay_v8_unlocked');
+      document.getElementById('login-pass').value = '';
+      document.getElementById('login-error').classList.add('hidden');
+      document.getElementById('app-shell').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+    }
+
+    function switchTab(tabId) {
+      ['dashboard', 'catalog', 'classroom', 'certs', 'resume', 'radar', 'aitutor', 'tracker'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.add('hidden');
+        document.getElementById(`nav-${t}`).classList.remove('active');
+      });
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+      document.getElementById(`nav-${tabId}`).classList.add('active');
+      if (tabId === 'resume') renderAutoResume();
+      if (tabId === 'certs') renderCertsVault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextQuote() {
+      quoteIndex = (quoteIndex + 1) % quotes.length;
+      document.getElementById('hero-quote').textContent = `"${quotes[quoteIndex].text}"`;
+      document.getElementById('hero-quote-author').textContent = `— ${quotes[quoteIndex].author}`;
+    }
+
+    function getModuleDoneCount(mId) {
+      return [0, 1, 2, 3].filter(i => state.checked[`m${mId}_${i}`]).length;
+    }
+
+    function isModuleStartedOrDone(mId) {
+      return getModuleDoneCount(mId) >= 1 || !!state.certsEarned[mId];
+    }
+
+    function toggleCertEarned(mId) {
+      state.certsEarned[mId] = !state.certsEarned[mId];
+      saveState();
+      renderCertsVault();
+      renderCatalog();
+      if (currentActiveMonthId === mId) {
+        document.getElementById('class-cert-check').checked = !!state.certsEarned[mId];
+      }
+    }
+
+    function updateAllMetrics() {
+      const totalLessons = modules.length * 4;
+      const doneLessons = Object.values(state.checked).filter(Boolean).length;
+      const pct = Math.round((doneLessons / totalLessons) * 100);
+      const earnedCertsCount = Object.values(state.certsEarned).filter(Boolean).length;
+
+      const firstIncomplete = modules.find(m => getModuleDoneCount(m.id) < 4) || modules[modules.length - 1];
+      currentActiveMonthId = firstIncomplete.id;
+      const activeDone = getModuleDoneCount(firstIncomplete.id);
+      const activePct = activeDone * 25;
+
+      const activeModules = modules.filter(m => isModuleStartedOrDone(m.id));
+      const unlockedSkillCount = activeModules.reduce((acc, m) => acc + (m.resumeSkills ? m.resumeSkills.length : 0), 2);
+
+      document.getElementById('sidebar-pct').textContent = `${pct}%`;
+      document.getElementById('sidebar-bar').style.width = `${pct}%`;
+      document.getElementById('sidebar-tasks').textContent = `${doneLessons}/${totalLessons} Lessons`;
+      document.getElementById('sidebar-certs-stat').textContent = `🏆 ${earnedCertsCount}/18 Certs`;
+
+      document.getElementById('dash-current-code').textContent = `${firstIncomplete.code} (${firstIncomplete.date})`;
+      document.getElementById('dash-current-title').textContent = firstIncomplete.title;
+      document.getElementById('dash-week-hrs').textContent = `${state.weekHours} / 7.0 hrs`;
+      document.getElementById('dash-certs-count').textContent = `${earnedCertsCount} / 18 Certs`;
+      document.getElementById('dash-resume-skills').textContent = `${unlockedSkillCount} Skills Ready`;
+
+      document.getElementById('resume-date').textContent = `${firstIncomplete.phase} • ${firstIncomplete.date}`;
+      document.getElementById('resume-title').textContent = `${firstIncomplete.code}: ${firstIncomplete.title}`;
+      document.getElementById('resume-desc').textContent = firstIncomplete.impact;
+      document.getElementById('dash-side-skill').textContent = firstIncomplete.sideSkill;
+      document.getElementById('dash-cert-target').textContent = firstIncomplete.certName;
+      document.getElementById('resume-pct').textContent = `${activePct}%`;
+      document.getElementById('resume-bar').style.width = `${activePct}%`;
+
+      const quickBox = document.getElementById('resume-quick-links');
+      quickBox.innerHTML = firstIncomplete.resources.map(r => {
+        const style = r.type === 'tamil'
+          ? 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100'
+          : r.type === 'english'
+          ? 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100'
+          : r.type === 'cert'
+          ? 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100'
+          : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100';
+        return `<a href="${r.url}" target="_blank" class="text-[11px] font-semibold px-2.5 py-1.5 rounded-lg border ${style} transition">${r.name} ↗</a>`;
+      }).join('');
+    }
+
+    // Catalog Grid (Clean White Coursera Cards)
+    function renderCatalog() {
+      const grid = document.getElementById('catalog-grid');
+      grid.innerHTML = '';
+
+      const filtered = currentCatalogFilter === 'all'
+        ? modules
+        : modules.filter(m => m.phase === currentCatalogFilter);
+
+      filtered.forEach(m => {
+        const done = getModuleDoneCount(m.id);
+        const pct = done * 25;
+        const isComplete = done === 4;
+        const hasCert = !!state.certsEarned[m.id];
+
+        const card = document.createElement('div');
+        card.className = 'card-shadow rounded-2xl p-5 flex flex-col justify-between';
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <span class="text-xs font-bold px-2.5 py-1 rounded bg-blue-50 text-blue-700">${m.code} • ${m.date}</span>
+              <span class="text-xs font-semibold ${isComplete ? 'text-emerald-600 font-bold' : 'text-slate-400'}">
+                ${isComplete ? '✓ Completed' : `${done}/4 Weeks`}
+              </span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 mb-2">${m.title}</h3>
+
+            <div class="space-y-1.5 mb-4 text-xs">
+              <div class="p-2.5 rounded-lg bg-purple-50/70 border border-purple-200 text-slate-800">
+                <strong class="text-[10px] text-purple-700 uppercase block">⚡ Side-Skill:</strong>
+                ${m.sideSkill}
+              </div>
+              <div class="p-2.5 rounded-lg ${hasCert ? 'bg-emerald-50 border-emerald-300 text-emerald-900' : 'bg-amber-50/80 border-amber-200 text-slate-800'} border">
+                <strong class="text-[10px] ${hasCert ? 'text-emerald-700' : 'text-amber-800'} uppercase block">
+                  ${hasCert ? '🏆 BADGE EARNED ✓' : '🏆 Official Certificate:'}
+                </strong>
+                ${m.certName}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-3">
+              <div class="h-full ${isComplete ? 'bg-emerald-500' : 'coursera-blue'} transition-all" style="width:${pct}%"></div>
+            </div>
+            <button onclick="openModuleInClassroom(${m.id})"
+              class="w-full py-2 rounded-lg coursera-blue hover:bg-blue-700 text-white font-semibold text-xs transition">
+              Open Classroom (${m.code}) →
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterCatalog(phase, btn) {
+      currentCatalogFilter = phase;
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.className = 'cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700';
+      });
+      btn.className = 'cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold coursera-blue text-white';
+      renderCatalog();
+    }
+
+    // Certs & Side-Skills Vault View
+    function renderCertsVault() {
+      const grid = document.getElementById('certs-vault-grid');
+      const earnedCount = Object.values(state.certsEarned).filter(Boolean).length;
+      document.getElementById('vault-cert-counter').textContent = `${earnedCount} / 18 Earned`;
+
+      grid.innerHTML = modules.map(m => {
+        const earned = !!state.certsEarned[m.id];
+        return `
+          <div class="card-shadow rounded-2xl p-5 flex flex-col justify-between ${earned ? 'border-emerald-400 bg-emerald-50/20' : ''}">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="text-xs font-bold px-2.5 py-1 rounded bg-blue-50 text-blue-700">${m.code} • ${m.date}</span>
+                <label class="flex items-center gap-2 text-xs font-bold ${earned ? 'text-emerald-700' : 'text-slate-500'} cursor-pointer">
+                  <input type="checkbox" ${earned ? 'checked' : ''} onchange="toggleCertEarned(${m.id})" class="h-4 w-4 rounded" />
+                  <span>${earned ? '🏆 Badge Earned' : 'Mark Badge Earned'}</span>
+                </label>
+              </div>
+
+              <h3 class="text-base font-bold text-slate-900 mb-2">🏆 ${m.certName}</h3>
+
+              <div class="p-3 rounded-xl bg-purple-50/60 border border-purple-200 text-xs mb-3">
+                <span class="text-[10px] text-purple-700 uppercase font-bold block mb-0.5">⚡ Paired Side-Skill (${m.title}):</span>
+                <strong class="text-slate-900">${m.sideSkill}</strong> — <span class="text-slate-600">${m.sideWhy}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 pt-3 border-t border-slate-100">
+              <a href="${m.certUrl}" target="_blank" rel="noopener"
+                class="px-3.5 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold transition">
+                Open Official Cert / Lab Portal ↗
+              </a>
+              <button onclick="openModuleInClassroom(${m.id})" class="text-xs font-semibold text-blue-700 hover:underline">
+                Go to Module →
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Classroom
+    function populateClassroomDropdown() {
+      const sel = document.getElementById('classroom-select');
+      sel.innerHTML = modules.map(m => `<option value="${m.id}">${m.code} (${m.date}) — ${m.title}</option>`).join('');
+    }
+
+    function openModuleInClassroom(mId) {
+      currentActiveMonthId = mId;
+      const m = modules.find(x => x.id === mId) || modules[0];
+      document.getElementById('classroom-select').value = m.id;
+      document.getElementById('class-badge').textContent = `${m.code} • ${m.date} • ${m.phase}`;
+      document.getElementById('class-split').textContent = `⏱ ${m.split}`;
+      document.getElementById('class-title').textContent = m.title;
+      document.getElementById('class-impact').textContent = `⚡ 2030 Tech Impact: ${m.impact}`;
+      document.getElementById('class-side-skill').textContent = m.sideSkill;
+      document.getElementById('class-side-why').textContent = m.sideWhy;
+      document.getElementById('class-cert-name').textContent = m.certName;
+      document.getElementById('class-cert-link').href = m.certUrl;
+      document.getElementById('class-cert-check').checked = !!state.certsEarned[m.id];
+      document.getElementById('class-m5-tip').textContent = m.m5Tip;
+      document.getElementById('class-m5-cmd').textContent = m.m5Cmd;
+      document.getElementById('class-notes').value = state.notes[m.id] || '';
+
+      const tasksEl = document.getElementById('class-tasks');
+      tasksEl.innerHTML = m.tasks.map((t, idx) => {
+        const checked = !!state.checked[`m${m.id}_${idx}`];
+        return `
+          <label class="flex items-start gap-3 p-3.5 rounded-xl border ${checked ? 'bg-emerald-50/60 border-emerald-300' : 'bg-white border-slate-200'} hover:border-blue-400 cursor-pointer transition">
+            <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleLesson(${m.id}, ${idx})" class="mt-0.5 h-4 w-4 rounded" />
+            <span class="text-sm ${checked ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}">${t}</span>
+          </label>
+        `;
+      }).join('');
+
+      const resEl = document.getElementById('class-resources');
+      resEl.innerHTML = m.resources.map(r => {
+        const style = r.type === 'tamil'
+          ? 'bg-red-50 hover:bg-red-100 border-red-200 text-red-800'
+          : r.type === 'english'
+          ? 'bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-800'
+          : r.type === 'cert'
+          ? 'bg-amber-50 hover:bg-amber-100 border-amber-200 text-amber-900'
+          : 'bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-800';
+        return `
+          <a href="${r.url}" target="_blank" rel="noopener"
+            class="flex items-center justify-between p-3 rounded-xl border ${style} text-xs font-semibold transition">
+            <span class="pr-2">${r.name}</span>
+            <span>↗</span>
+          </a>
+        `;
+      }).join('');
+
+      switchTab('classroom');
+    }
+
+    function toggleLesson(mId, idx) {
+      const key = `m${mId}_${idx}`;
+      state.checked[key] = !state.checked[key];
+      saveState();
+      openModuleInClassroom(mId);
+      renderCatalog();
+    }
+
+    function saveClassroomNote() {
+      state.notes[currentActiveMonthId] = document.getElementById('class-notes').value;
+      saveState();
+    }
+
+    function prevModule() {
+      if (currentActiveMonthId > 1) openModuleInClassroom(currentActiveMonthId - 1);
+    }
+    function nextModule() {
+      if (currentActiveMonthId < modules.length) openModuleInClassroom(currentActiveMonthId + 1);
+    }
+
+    // Auto-Resume Builder Engine
+    function setResumeMode(mode) {
+      resumeMode = mode;
+      document.getElementById('res-mode-verified').className = mode === 'verified'
+        ? 'px-3.5 py-2 rounded-lg text-xs font-bold coursera-blue text-white transition'
+        : 'px-3.5 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 transition';
+      document.getElementById('res-mode-preview').className = mode === 'preview'
+        ? 'px-3.5 py-2 rounded-lg text-xs font-bold coursera-blue text-white transition'
+        : 'px-3.5 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 transition';
+      renderAutoResume();
+    }
+
+    function saveCVMeta() {
+      state.cvMeta = {
+        email: document.getElementById('cv-email').value,
+        phone: document.getElementById('cv-phone').value,
+        github: document.getElementById('cv-github').value,
+        college: document.getElementById('cv-college').value
+      };
+      saveState();
+    }
+
+    function renderAutoResume() {
+      document.getElementById('cv-out-email').textContent = state.cvMeta.email;
+      document.getElementById('cv-out-phone').textContent = state.cvMeta.phone;
+      document.getElementById('cv-out-github').textContent = state.cvMeta.github;
+      document.getElementById('cv-out-college').textContent = state.cvMeta.college;
+
+      const includedModules = resumeMode === 'preview'
+        ? modules
+        : modules.filter(m => isModuleStartedOrDone(m.id));
+
+      const doneLessons = Object.values(state.checked).filter(Boolean).length;
+      const pct = Math.round((doneLessons / 72) * 100);
+
+      const summaryEl = document.getElementById('cv-summary-text');
+      if (resumeMode === 'preview' || pct >= 70) {
+        summaryEl.textContent = "Cloud & AI Data Engineer (2028 CSE Graduate) with verified credentials across AWS, Google Cloud, Snowflake, and Databricks. Experienced in architecting Modern Lakehouses (Delta Lake, Apache Iceberg), High-Speed Engines (PySpark, DuckDB, Polars), Real-Time Kafka Streams, and Enterprise AI Vector RAG Pipelines.";
+      } else if (includedModules.length === 0) {
+        summaryEl.textContent = "Computer Science & Engineering undergraduate (Class of 2028) specializing in Cloud Data Engineering, SQL database optimization, and automated Python data pipelines. (Check off lessons or badges in Udhay's Learning to dynamically unlock verified skills & certs here!)";
+      } else {
+        summaryEl.textContent = `Computer Science & Engineering candidate (2028) with hands-on Cloud & AI Data Engineering proficiency across ${includedModules.map(m => m.title.split('&')[0].trim()).slice(0, 5).join(', ')}. Proven ability to build automated, cost-optimized data pipelines on Apple Silicon, Google Colab, and AWS Cloud.`;
+      }
+
+      const skillGroups = {
+        "Languages & Databases": ["SQL", "Python 3"],
+        "Big Data & High-Speed Engines": [],
+        "Cloud & Warehouse Architecture": [],
+        "Orchestration, dbt & DataOps": ["Git", "macOS Unix Shell (zsh)"],
+        "2030 AI Data Engineering & Vector RAG": [],
+        "Complementary Engineering Side-Skills": []
+      };
+
+      includedModules.forEach(m => {
+        if (m.resumeSkillCat && m.resumeSkills) {
+          if (!skillGroups[m.resumeSkillCat]) skillGroups[m.resumeSkillCat] = [];
+          m.resumeSkills.forEach(s => {
+            if (!skillGroups[m.resumeSkillCat].includes(s)) {
+              skillGroups[m.resumeSkillCat].push(s);
+            }
+          });
+        }
+        if (m.sideSkill && !skillGroups["Complementary Engineering Side-Skills"].includes(m.sideSkill.split('(')[0].trim())) {
+          skillGroups["Complementary Engineering Side-Skills"].push(m.sideSkill.split('(')[0].trim());
+        }
+      });
+
+      const skillsEl = document.getElementById('cv-skills-list');
+      skillsEl.innerHTML = Object.entries(skillGroups)
+        .filter(([_, arr]) => arr.length > 0)
+        .map(([cat, arr]) => `<div><strong class="font-bold text-slate-900">${cat}:</strong> ${arr.join(', ')}</div>`)
+        .join('');
+
+      const projEl = document.getElementById('cv-projects-list');
+      if (includedModules.length === 0) {
+        projEl.innerHTML = `
+          <div class="p-3 rounded-lg bg-slate-100 text-slate-600 italic">
+            No modules checked off yet! Tick your first lesson in <strong>M01 (SQL Core)</strong> inside the Classroom, or click <strong>"👁 Preview Full 2028 Target CV"</strong> above to see your complete 2028 resume.
+          </div>
+        `;
+      } else {
+        const capstones = includedModules.filter(m => m.isCapstone);
+        const coreMods = includedModules.filter(m => !m.isCapstone);
+
+        let html = '';
+        capstones.forEach(c => {
+          const repoNote = state.notes[c.id] ? ` <span class="text-blue-700 font-semibold">(${state.notes[c.id]})</span>` : '';
+          html += `
+            <div>
+              <div class="flex justify-between font-bold text-slate-900">
+                <span>${c.capstoneTitle}${repoNote}</span>
+                <span class="text-slate-600">${c.date}</span>
+              </div>
+              <ul class="list-disc list-inside mt-0.5 text-slate-700">
+                <li>${c.resumeBullet.replace(/^CAPSTONE #\d:\s*/i, '')}</li>
+              </ul>
+            </div>
+          `;
+        });
+
+        if (coreMods.length > 0) {
+          html += `
+            <div>
+              <div class="flex justify-between font-bold text-slate-900">
+                <span>Cloud, Lakehouse & Side-Skill Engineering Implementations</span>
+                <span class="text-slate-600">2027 – 2028</span>
+              </div>
+              <ul class="list-disc list-inside mt-0.5 space-y-0.5 text-slate-700">
+                ${coreMods.slice(0, 8).map(m => `<li>${m.resumeBullet}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+        projEl.innerHTML = html;
+      }
+
+      const certsEl = document.getElementById('cv-certs-list');
+      const earnedCertMods = resumeMode === 'preview'
+        ? modules.slice(0, 8)
+        : modules.filter(m => state.certsEarned[m.id] || getModuleDoneCount(m.id) === 4);
+
+      if (earnedCertMods.length === 0) {
+        certsEl.innerHTML = `<li>AWS Cloud Quest, Google Cloud & Databricks Badges (In Progress — Tracked in Udhay's Learning)</li>`;
+      } else {
+        certsEl.innerHTML = earnedCertMods.map(m => `<li><strong>${m.certName}</strong> (${m.date})</li>`).join('');
+      }
+    }
+
+    // Tech Radar
+    function renderTechRadar() {
+      const grid = document.getElementById('radar-curated-grid');
+      const items = currentRadarFilter === 'all'
+        ? techRadarItems
+        : techRadarItems.filter(i => i.category === currentRadarFilter);
+
+      grid.innerHTML = items.map(item => `
+        <div class="card-shadow rounded-2xl p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <span class="text-[11px] font-bold px-2.5 py-1 rounded bg-blue-50 text-blue-700">${item.badge}</span>
+              <span class="text-xs font-semibold text-slate-400">${item.category}</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 mb-2">${item.title}</h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">${item.summary}</p>
+          </div>
+          <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 font-medium">
+            ✓ <strong>Udhay's Advantage:</strong> ${item.ubAction}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterRadar(cat, btn) {
+      currentRadarFilter = cat;
+      document.querySelectorAll('.radar-btn').forEach(b => {
+        b.className = 'radar-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700';
+      });
+      btn.className = 'radar-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold coursera-blue text-white';
+      renderTechRadar();
+    }
+
+    async function fetchLiveTechNews() {
+      const statusEl = document.getElementById('live-feed-status');
+      const box = document.getElementById('live-news-container');
+      statusEl.textContent = "Fetching live feeds from Dev.to & Hacker News...";
+      box.innerHTML = `<div class="p-4 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-700 font-semibold">Syncing live Data Engineering & AI articles...</div>`;
+
+      try {
+        const [devRes, hnRes] = await Promise.all([
+          fetch('https://dev.to/api/articles?tag=dataengineering&per_page=4'),
+          fetch('https://hn.algolia.com/api/v1/search_by_date?query=data+engineering+OR+duckdb+OR+iceberg+OR+snowflake&tags=story&hitsPerPage=4')
+        ]);
+        const devData = await devRes.json();
+        const hnData = await hnRes.json();
+
+        const combined = [
+          ...(devData || []).map(a => ({
+            source: 'DEV.TO // DATA ENG',
+            title: a.title,
+            url: a.url,
+            date: a.readable_publish_date || 'Recent'
+          })),
+          ...((hnData && hnData.hits) || []).map(h => ({
+            source: 'HACKER NEWS // TECH BUZZ',
+            title: h.title,
+            url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
+            date: new Date(h.created_at).toLocaleDateString()
+          }))
+        ].slice(0, 8);
+
+        statusEl.textContent = `Synced ${combined.length} live stories just now`;
+        box.innerHTML = combined.map(item => `
+          <a href="${item.url}" target="_blank" rel="noopener"
+            class="p-4 rounded-xl bg-slate-50 hover:bg-blue-50/60 border border-slate-200 hover:border-blue-300 transition flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] font-bold text-blue-700 uppercase block mb-1">${item.source} • ${item.date}</span>
+              <h4 class="text-xs sm:text-sm font-bold text-slate-900 leading-snug">${item.title}</h4>
+            </div>
+            <span class="text-[11px] font-semibold text-emerald-700 mt-3 block">Read Article ↗</span>
+          </a>
+        `).join('');
+      } catch {
+        statusEl.textContent = "Offline Mode (Check Wi-Fi)";
+        box.innerHTML = `<div class="p-4 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700">Could not reach live APIs—make sure you are connected to Wi-Fi!</div>`;
+      }
+    }
+
+    // AI Doubt Solver
+    const chatHistory = [];            // [{ role: 'user' | 'model', text }]
+    let aiBusy = false;
+    const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+    const AI_SYSTEM_PROMPT =
+      "You are a friendly, knowledgeable AI assistant inside 'Udhay's Learning', a personal learning portal for Udhay (UB), " +
+      "a Computer Engineering student learning Python, SQL, Data Engineering, Cloud Computing and AI. " +
+      "Answer ANY question clearly, like ChatGPT: use simple language, short paragraphs, bullet points, and code blocks for code. " +
+      "Give small examples. Remember the earlier messages in this chat and answer follow-up questions in context. " +
+      "If the question is about learning, give practical next steps.";
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Small safe markdown -> HTML (escapes first, so model output can never inject HTML)
+    function renderMarkdown(src) {
+      const blocks = [];
+      let t = escapeHtml(src).replace(/```(\w*)\n?([\s\S]*?)```/g, (m, lang, code) => {
+        blocks.push('<pre class="bg-slate-900 text-slate-100 rounded-lg p-3 overflow-x-auto text-xs font-mono-code my-2"><code>' + code.replace(/\n$/, '') + '</code></pre>');
+        return '@@BLOCK' + (blocks.length - 1) + '@@';
+      });
+      t = t
+        .replace(/`([^`\n]+)`/g, '<code class="font-mono-code bg-slate-100 px-1.5 py-0.5 rounded text-xs">$1</code>')
+        .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/^#{1,6}\s+(.+)$/gm, '<strong class="block mt-2">$1</strong>')
+        .replace(/^\s*[-*•]\s+(.+)$/gm, '<div class="pl-4">• $1</div>')
+        .replace(/^\s*(\d+)\.\s+(.+)$/gm, '<div class="pl-4">$1. $2</div>')
+        .replace(/\n/g, '<br>')
+        .replace(/(<\/div>|<\/strong>)<br>/g, '$1')
+        .replace(/(@@BLOCK\d+@@)<br>/g, '$1');
+      return t.replace(/@@BLOCK(\d+)@@/g, (m, i) => blocks[i]);
+    }
+
+    function toggleAIConfig() {
+      const mode = document.getElementById('ai-mode').value;
+      document.getElementById('gemini-config').classList.toggle('hidden', mode !== 'gemini');
+      document.getElementById('ollama-config').classList.toggle('hidden', mode !== 'ollama');
+      const keyBox = document.getElementById('gemini-key-input');
+      if (keyBox && state.geminiKey && !keyBox.value) keyBox.value = state.geminiKey;
+    }
+
+    function saveGeminiKey() {
+      state.geminiKey = document.getElementById('gemini-key-input').value.trim();
+      saveState();
+      alert(state.geminiKey ? 'Gemini API key saved in this browser. Now ask any question!' : 'Gemini API key removed.');
+    }
+
+    function askAIAboutCurrentModule() {
+      const m = modules.find(x => x.id === currentActiveMonthId);
+      switchTab('aitutor');
+      sendQuickPrompt(`Explain how to master ${m.code} (${m.title}), its side-skill (${m.sideSkill}), and how to pass ${m.certName}.`);
+    }
+
+    function sendQuickPrompt(text) {
+      document.getElementById('chat-input').value = text;
+      handleChatSubmit(new Event('submit'));
+    }
+
+    // Returns the content element of the new bubble so it can be updated later
+    function appendChatBubble(sender, htmlText) {
+      const box = document.getElementById('chat-box');
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flex items-start gap-3';
+      if (sender === 'user') {
+        wrapper.innerHTML = `
+          <div class="ml-auto bg-blue-600 text-white rounded-2xl rounded-tr-none p-3.5 text-sm max-w-xl shadow-sm">
+            ${htmlText}
+          </div>
+          <div class="h-8 w-8 rounded-lg bg-slate-800 text-white flex items-center justify-center font-bold text-xs shrink-0">UB</div>
+        `;
+      } else {
+        wrapper.innerHTML = `
+          <div class="h-8 w-8 rounded-lg coursera-blue text-white flex items-center justify-center font-bold text-xs shrink-0">AI</div>
+          <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-none p-4 text-slate-800 shadow-sm max-w-2xl leading-relaxed text-sm space-y-2 min-w-0">
+            ${htmlText}
+          </div>
+        `;
+      }
+      box.appendChild(wrapper);
+      box.scrollTop = box.scrollHeight;
+      return wrapper.lastElementChild.classList.contains('shrink-0') ? wrapper.firstElementChild : wrapper.lastElementChild;
+    }
+
+    function getBuiltInAnswer(q) {
+      const lower = q.toLowerCase();
+      if (lower.includes('cert') || lower.includes('badge')) {
+        return `<strong>Top Free Official Certificates in Udhay's Learning:</strong><br>
+        1. <strong>HackerRank SQL (Intermediate & Advanced):</strong> Free, proctored, great for Phase 1.<br>
+        2. <strong>AWS Cloud Quest & Snowflake Hands-On Essentials:</strong> Free official Credly digital badges for your LinkedIn.<br>
+        3. <strong>Databricks Lakehouse Fundamentals & Google Cloud Skills Boost:</strong> Free official partner credentials.<br>
+        4. <strong>Flagship Paid Exam (Month 14):</strong> <em>Databricks Certified Data Engineer Associate</em> or <em>AWS Certified Data Engineer Associate</em>.`;
+      }
+      if (lower.includes('window') || lower.includes('row_number') || lower.includes('rank')) {
+        return `<strong>SQL Window Functions:</strong><br>• <code>ROW_NUMBER()</code>: Unique numbers (1, 2, 3, 4).<br>• <code>RANK()</code>: Ties get same rank, skips next (1, 2, 2, 4).<br>• <code>DENSE_RANK()</code>: Ties get same rank, NO gaps (1, 2, 2, 3)—use this in interviews for "Top 3 earners per department"!`;
+      }
+      if (lower.includes('iceberg')) {
+        return `<strong>Apache Iceberg (2030 Standard):</strong><br>Brings ACID transactions, time travel, and schema evolution directly onto AWS S3 Parquet files so Snowflake, Spark, and DuckDB can query the exact same data without vendor lock-in.`;
+      }
+      if (lower.includes('rag') || lower.includes('vector')) {
+        return `<strong>Enterprise AI RAG Pipeline (Capstone #3):</strong><br>1. Python chunks PDFs/Docs.<br>2. Local M5 Ollama generates embeddings via <code>nomic-embed-text</code> for ₹0 cost.<br>3. Stored in PostgreSQL <code>pgvector</code> and scheduled via Apache Airflow.`;
+      }
+      if (/(module|month|study|plan|roadmap|syllabus|learn)/.test(lower)) {
+        const m = modules.find(x => x.id === currentActiveMonthId);
+        return `<strong>Udhay's Study Guide for ${m.code} (${m.title}):</strong><br>
+        • <strong>Core Focus:</strong> Watch the 🇮🇳 Tamil & 🌐 English tutorials in the Study Classroom.<br>
+        • <strong>Side-Skill:</strong> Practice <em>${m.sideSkill}</em>.<br>
+        • <strong>Official Badge:</strong> Complete <em>${m.certName}</em> and tick the "Earned!" box so it appears on your Auto-Resume!`;
+      }
+      return `I only know a few topics in <strong>Built-In</strong> mode (certificates, SQL window functions, Iceberg, RAG, and your study plan).<br><br>
+      To ask <strong>anything</strong>, like ChatGPT, switch the mode above to <strong>🌐 Google Gemini</strong> and paste your free API key.`;
+    }
+
+    async function callGemini(key) {
+      const contents = chatHistory.slice(-20).map(m => ({ role: m.role, parts: [{ text: m.text }] }));
+      let lastErr = '';
+      for (const model of GEMINI_MODELS) {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+          body: JSON.stringify({ systemInstruction: { parts: [{ text: AI_SYSTEM_PROMPT }] }, contents })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok) {
+          const text = (data?.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('');
+          if (text) return text;
+          throw new Error('The AI sent an empty answer. Please rephrase your question and try again.');
+        }
+        lastErr = data?.error?.message || ('Error ' + res.status);
+        if (res.status === 404) continue; // this model is not available, try the next one
+        if (res.status === 400 && /api key/i.test(lastErr)) throw new Error('Your Gemini API key looks invalid. Paste it again and click Save Key.');
+        if (res.status === 429) throw new Error('Too many requests right now (free limit reached). Wait a minute and try again.');
+        throw new Error(lastErr);
+      }
+      throw new Error(lastErr || 'No Gemini model was available.');
+    }
+
+    async function callOllama() {
+      const messages = [{ role: 'system', content: AI_SYSTEM_PROMPT }]
+        .concat(chatHistory.slice(-20).map(m => ({ role: m.role === 'model' ? 'assistant' : 'user', content: m.text })));
+      const res = await fetch('http://localhost:11434/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'llama3.2', messages, stream: false })
+      });
+      const data = await res.json();
+      return data?.message?.content || '';
+    }
+
+    async function handleChatSubmit(e) {
+      if (e.preventDefault) e.preventDefault();
+      if (aiBusy) return;
+      const input = document.getElementById('chat-input');
+      const question = input.value.trim();
+      if (!question) return;
+      input.value = '';
+
+      appendChatBubble('user', escapeHtml(question));
+      const mode = document.getElementById('ai-mode').value;
+
+      if (mode === 'builtin') {
+        setTimeout(() => appendChatBubble('ai', getBuiltInAnswer(question)), 200);
+        return;
+      }
+
+      let key = '';
+      if (mode === 'gemini') {
+        key = state.geminiKey || document.getElementById('gemini-key-input').value.trim();
+        if (!key) {
+          appendChatBubble('ai', 'To chat like ChatGPT, paste your <strong>free Gemini API key</strong> in the box above (get it from <a class="underline text-blue-700" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a>), click <strong>Save Key</strong>, then ask again.');
+          return;
+        }
+        if (!state.geminiKey) { state.geminiKey = key; saveState(); }
+      }
+
+      aiBusy = true;
+      chatHistory.push({ role: 'user', text: question });
+      const bubble = appendChatBubble('ai', '<span class="text-slate-500 animate-pulse">Thinking…</span>');
+      try {
+        const reply = mode === 'gemini' ? await callGemini(key) : await callOllama();
+        if (!reply) throw new Error('Empty answer received.');
+        chatHistory.push({ role: 'model', text: reply });
+        bubble.innerHTML = renderMarkdown(reply);
+      } catch (err) {
+        chatHistory.pop(); // keep the history clean so the next question still works
+        const msg = (mode === 'ollama')
+          ? 'Could not reach Ollama. Start it on your Mac with <code>OLLAMA_ORIGINS="*" ollama serve</code>, or switch to Google Gemini mode.'
+          : escapeHtml(err && err.message ? err.message : 'Something went wrong. Check your internet and API key.');
+        bubble.innerHTML = '<span class="text-red-600">' + msg + '</span>';
+      } finally {
+        aiBusy = false;
+        document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+      }
+    }
+
+    // Study Log & Settings
+    function addStudyLog() {
+      const hrs = parseFloat(document.getElementById('log-hrs-input').value) || 0;
+      const topic = document.getElementById('log-topic-input').value.trim() || 'Focused Data Engineering Sprint';
+      if (hrs <= 0) return;
+
+      const date = new Date().toISOString().split('T')[0];
+      state.weekHours = +(state.weekHours + hrs).toFixed(1);
+      state.totalHours = +(state.totalHours + hrs).toFixed(1);
+      state.logs.unshift({ date, hrs, topic });
+      if (state.logs.length > 25) state.logs.pop();
+
+      document.getElementById('log-topic-input').value = '';
+      saveState();
+      renderLogs();
+    }
+
+    function resetWeeklyHours() {
+      state.weekHours = 0;
+      saveState();
+    }
+
+    function renderLogs() {
+      const list = document.getElementById('log-history-list');
+      if (!state.logs.length) {
+        list.innerHTML = `<p class="text-xs text-slate-400">No study sessions logged yet.</p>`;
+        return;
+      }
+      list.innerHTML = state.logs.map(l => `
+        <div class="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs">
+          <span class="font-medium text-slate-800">${l.topic}</span>
+          <span class="font-bold text-blue-700">${l.hrs} hrs • ${l.date}</span>
+        </div>
+      `).join('');
+    }
+
+    function updatePassword() {
+      const p = document.getElementById('new-pass-field').value.trim();
+      if (p.length < 3) return alert('Password must be at least 3 characters.');
+      state.passcode = p;
+      saveState();
+      document.getElementById('new-pass-field').value = '';
+      alert('Password updated successfully!');
+    }
+
+    function exportBackup() {
+      const { geminiKey, ...safeState } = state; // never put the API key in a backup file
+      const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(safeState, null, 2));
+      const a = document.createElement('a');
+      a.href = str;
+      a.download = `Udhays_Learning_Backup_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+    }
+
+    function importBackup(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          state = JSON.parse(ev.target.result);
+          saveState();
+          initPortal();
+          alert('Backup restored!');
+        } catch {
+          alert('Invalid backup file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function initPortal() {
+      populateClassroomDropdown();
+      updateAllMetrics();
+      renderCatalog();
+      renderCertsVault();
+      renderTechRadar();
+      renderAutoResume();
+      renderLogs();
+      openModuleInClassroom(currentActiveMonthId);
+      toggleAIConfig();
+      switchTab('dashboard');
+    }
+
+    if (sessionStorage.getItem('udhay_v8_unlocked') === 'true') {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-shell').classList.remove('hidden');
+      initPortal();
+    }
+  </script>
+</body>
+</html>
