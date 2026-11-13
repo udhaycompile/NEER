@@ -120,4 +120,4 @@ dataset/           demo dataset (CSV): network, 37-day live city, 16 scenarios -
 
 ## Author
 
-Built by **Akarsh N,Udhayabala C K** (Team Vector Zero), B.E. Computer Science and Engineering at PSNA College of Engineering and Technology, using AI-assisted development (Claude Code).
+Built by **Akarsh N and Udhayabala C K** (Team Vector Zero), B.E. Computer Science and Engineering at PSNA College of Engineering and Technology, using AI-assisted development (Claude Code).
